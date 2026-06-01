@@ -1,37 +1,22 @@
-<div id="supportTab" class="tab-content">
-    <div class="card">
-        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-            <div style="font-size: 28px;">🛟</div>
-            <h2 id="supportTitle" style="margin-bottom: 0;">Support</h2>
-        </div>
-        <p id="supportDesc" style="margin-bottom: 16px; font-size: 13px; color: #64748b;">Contact us if you find a bug or have suggestions</p>
-        <button id="supportBtn" class="btn" data-key="openChatBtn">Open Chat</button>
+<div class="card">
+    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+        <div style="font-size: 32px;">🛟</div>
+        <h2 style="margin-bottom: 0;" data-i18n="more.support">Техподдержка</h2>
     </div>
-    
-    <div class="card">
-        <h2 id="languageTitle">App Language</h2>
-        <div class="lang-selector">
-            <button id="langRuBtn" class="lang-btn">Русский</button>
-            <button id="langEnBtn" class="lang-btn active">English</button>
-        </div>
+    <p style="margin-bottom: 16px; font-size: 13px; color: #64748b;" data-i18n="more.supportDesc">Напишите нам, если нашли баг или есть идеи!</p>
+    <button id="supportBtn" class="btn" data-i18n="more.supportBtn">📩 Открыть чат</button>
+</div>
+
+<div class="card">
+    <h2 data-i18n="more.import">📥 Импорт сделок P2P из Telegram Wallet</h2>
+    <input type="file" id="telegramImportFile" class="file-input" accept=".xlsx, .xls">
+    <div class="flex-buttons">
+        <button id="importReplaceBtn" class="btn" data-i18n="more.importReplace">📥 Заменить всё</button>
+        <button id="importAddBtn" class="btn-green" data-i18n="more.importAdd">📥 Добавить</button>
     </div>
-    
-    <div class="card">
-        <h2 id="importTitle">Import from Telegram Wallet</h2>
-        <input type="file" id="telegramImportFile" class="file-input" accept=".xlsx, .xls">
-        <div class="flex-buttons">
-            <button id="importReplaceBtn" class="btn" data-key="replaceAllBtn">Replace All</button>
-            <button id="importAddBtn" class="btn-green" data-key="addBtn">Add</button>
-        </div>
-    </div>
-    
-    <div class="card">
-        <h2 id="syncTitle">Sync Status</h2>
-        <div id="syncStatusContainer" class="sync-status-card">
-            <div class="sync-header">
-                <div class="sync-icon info">☁️</div>
-                <div class="sync-title" id="syncLoading">Loading...</div>
-            </div>
-        </div>
-    </div>
-</div> 
+</div>
+
+<div class="card">
+    <h2 data-i18n="more.syncStatus">☁️ Статус синхронизации</h2>
+    <div id="syncStatusContainer" class="sync-status-card"></div>
+</div>

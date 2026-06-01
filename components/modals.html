@@ -1,19 +1,63 @@
 <div id="historyModal" class="modal" style="display: none;">
     <div class="modal-content" style="max-width: 550px; max-height: 80vh; overflow-y: auto;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-            <h3 id="historyTitle" style="margin-bottom: 0;">Deal History</h3>
+            <h3 style="margin-bottom: 0;" data-i18n="modal.history">📋 Вся история</h3>
             <button id="closeHistoryBtn" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #64748b;">&times;</button>
         </div>
         <div class="search-history">
-            <div class="search-box">
-                <input type="text" id="historySearchInput" placeholder="Search by counterparty or comment" data-key="searchPlaceholder">
-            </div>
+            <div class="search-box"><input type="text" id="historySearchInput" data-i18n-placeholder="modal.search" placeholder="🔍 Поиск по контрагенту или комментарию"></div>
         </div>
         <div class="filter-buttons">
-            <button class="filter-pill active" data-history-filter="all" data-key="filterAll">All</button>
-            <button class="filter-pill" data-history-filter="buy" data-key="filterBuys">Buys</button>
-            <button class="filter-pill" data-history-filter="sell" data-key="filterSells">Sells</button>
+            <button class="filter-pill active" data-history-filter="all" data-i18n="modal.all">Все</button>
+            <button class="filter-pill" data-history-filter="buy" data-i18n="modal.buys">🔴 Покупки</button>
+            <button class="filter-pill" data-history-filter="sell" data-i18n="modal.sells">🟢 Продажи</button>
         </div>
         <div id="historyDealsList"></div>
+    </div>
+</div>
+
+<!-- Модальное окно редактирования -->
+<div id="editModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <h3 data-i18n="modal.editTitle">✏️ Редактирование сделки</h3>
+        <div class="input-group">
+            <label data-i18n="create.type">Тип операции</label>
+            <div class="select-wrapper">
+                <select id="editType">
+                    <option value="buy" data-i18n="create.buy">Покупка USDT</option>
+                    <option value="sell" data-i18n="create.sell">Продажа USDT</option>
+                </select>
+            </div>
+        </div>
+        <div class="input-group">
+            <label data-i18n="create.date">Дата сделки (ДД.ММ.ГГ)</label>
+            <input type="text" id="editDate" placeholder="25.05.26" maxlength="10">
+        </div>
+        <div class="input-group">
+            <label data-i18n="create.amountRub">Сумма оплаты (RUB)</label>
+            <input type="number" id="editAmount" step="0.01" placeholder="5000">
+        </div>
+        <div class="input-group">
+            <label data-i18n="create.amountUsdt">Количество USDT</label>
+            <input type="number" id="editUsdt" step="0.01" placeholder="100">
+        </div>
+        <div class="input-group">
+            <label data-i18n="create.price">Цена за 1 USDT</label>
+            <input type="number" id="editPrice" step="0.01" placeholder="Цена">
+        </div>
+        <div class="input-group">
+            <label data-i18n="create.paymentMethod">Метод оплаты</label>
+            <input type="text" id="editCounterparty" placeholder="Сбербанк/Т-банк">
+        </div>
+        <div class="input-group">
+            <label data-i18n="create.dealNumber">Номер сделки</label>
+            <input type="text" id="editDealNumber" placeholder="Опционально">
+        </div>
+        <div class="input-group">
+            <label data-i18n="create.checkLink">Ссылка на чек оплаты</label>
+            <textarea id="editComment" rows="2" placeholder="https://..."></textarea>
+        </div>
+        <button id="saveEditBtn" class="btn" style="margin-bottom: 12px;" data-i18n="modal.save">💾 Сохранить изменения</button>
+        <button id="cancelEditBtn" class="center-btn" data-i18n="modal.cancel">Отмена</button>
     </div>
 </div>

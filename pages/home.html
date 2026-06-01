@@ -1,24 +1,32 @@
-<div id="homeTab" class="tab-content active">
-    <div class="profit-block">
-        <div class="label" id="profitLabel">Real Profit (RUB)</div>
-        <div class="value" id="totalProfitRub">0 ₽</div>
-    </div>
-    
-    <div class="rates-grid">
-        <div class="rate-card"><div class="currency">USD</div><div class="value" id="usdRate">—</div><div class="update-time" id="usdUpdate">—</div></div>
-        <div class="rate-card"><div class="currency">EUR</div><div class="value" id="eurRate">—</div><div class="update-time" id="eurUpdate">—</div></div>
-        <div class="rate-card"><div class="currency">CNY</div><div class="value" id="cnyRate">—</div><div class="update-time" id="cnyUpdate">—</div></div>
-    </div>
+<div class="profit-block">
+    <div class="label" data-i18n="home.realProfit">🏆 Реальная прибыль (RUB)</div>
+    <div class="value" id="totalProfitRub">0 ₽</div>
+</div>
 
-    <div class="card">
-        <div class="deals-header"><h2 id="recentTitle">Recent Operations</h2></div>
-        <div class="deals-stats-row">
-            <div class="deal-stat-chip"><div class="label" id="buysLabel">Buys</div><div class="value" id="totalBuysCount">0</div></div>
-            <div class="deal-stat-chip"><div class="label" id="sellsLabel">Sells</div><div class="value" id="totalSellsCount">0</div></div>
-            <div class="deal-stat-chip"><div class="label" id="totalLabel">Total</div><div class="value" id="totalOperationsCount">0</div></div>
+<div class="card">
+    <h2 data-i18n="home.statistics">📊 P2P Статистика</h2>
+    <div class="stat-grid">
+        <div class="stat-item">
+            <div class="stat-label" data-i18n="home.turnover">🔄 Оборот (RUB)</div>
+            <div class="stat-value" id="totalTurnover">0 ₽</div>
         </div>
-        <div id="recentDealsList"></div>
-        <button id="showAllHistoryBtn" class="center-btn" data-key="showFullHistory">Show Full History</button>
-        <button id="clearAllDataBtn" class="btn-red mt-3" data-key="deleteAllDeals">Delete All Deals</button>
+        <div class="stat-item">
+            <div class="stat-label" data-i18n="home.totalDeals">📊 Всего сделок</div>
+            <div class="stat-value" id="totalOperationsCount">0</div>
+        </div>
     </div>
+    <div class="chart-container">
+        <div id="profitChart" class="chart-bars"></div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="deals-header"><h2 data-i18n="home.recentOperations">📋 Последние операции</h2></div>
+    <div class="deals-stats-row">
+        <div class="deal-stat-chip"><div class="label" data-i18n="home.buys">🟢 Покупок</div><div class="value" id="totalBuysCount">0</div></div>
+        <div class="deal-stat-chip"><div class="label" data-i18n="home.sells">🔴 Продаж</div><div class="value" id="totalSellsCount">0</div></div>
+    </div>
+    <div id="recentDealsList"></div>
+    <button id="showAllHistoryBtn" class="center-btn" data-i18n="home.showAllHistory">Показать всю историю сделок</button>
+    <button id="clearAllDataBtn" class="btn-red mt-3" data-i18n="home.deleteAll">🗑️ Удалить все сделки</button>
 </div>

@@ -112,3 +112,53 @@ function importFromTelegramWallet(replaceMode) {
     
     reader.readAsArrayBuffer(file);
 }
+// js/import.js - ДОБАВИТЬ В КОНЕЦ ФАЙЛА
+
+// Переопределяем функцию импорта с переведёнными сообщениями
+function importFromTelegramWalletWithMessages(replaceMode) {
+    const fileInput = document.getElementById('telegramImportFile');
+    if (!fileInput.files || fileInput.files.length === 0) {
+        if (typeof showMessage === 'function') {
+            showMessage('more.noFile');
+        } else {
+            alert('Выберите Excel-файл из Telegram Wallet');
+        }
+        return;
+    }
+    
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+    
+    reader.onload = function(e) {
+        // ... существующий код парсинга Excel ...
+        
+        if (newDeals.length === 0) {
+            if (typeof showError === 'function') {
+                showError('more.importError', { errors: importErrors });
+            } else {
+                alert(`Не удалось распознать сделки. Ошибок: ${importErrors}`);
+            }
+            return;
+        }
+        
+        if (replaceMode) {
+            if (confirm(t('more.replaceConfirm') + ` (${deals.length} шт.)`)) {
+                while(deals.length) deleteDeal(deals[0].id);
+            } else {
+                return;
+            }
+        }
+        
+        for (const deal of newDeals) addDeal(deal);
+        
+        if (typeof showSuccess === 'function') {
+            showSuccess('more.importSuccess', { count: newDeals.length, errors: importErrors });
+        } else {
+            alert(`✅ Импортировано ${newDeals.length} сделок! Пропущено: ${importErrors}`);
+        }
+        
+        fileInput.value = '';
+    };
+    
+    reader.readAsArrayBuffer(file);
+}

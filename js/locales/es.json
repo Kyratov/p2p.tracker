@@ -1,0 +1,126 @@
+{
+  "app": {
+    "name": "P2P Tracker Pro"
+  },
+  "tabs": {
+    "home": "Inicio",
+    "create": "Crear",
+    "calculator": "Calculadora",
+    "more": "Más"
+  },
+  "home": {
+    "realProfit": "Beneficio real (RUB)",
+    "statistics": "Estadísticas P2P",
+    "turnover": "Volumen (RUB)",
+    "totalDeals": "Total operaciones",
+    "profitChart": "Gráfico de beneficios mensuales",
+    "recentOperations": "Operaciones recientes",
+    "buys": "Compras",
+    "sells": "Ventas",
+    "showAllHistory": "Mostrar todo el historial",
+    "deleteAll": "Eliminar todas las operaciones",
+    "noDeals": "📭 No hay operaciones",
+    "emptyChart": "📊 Agrega operaciones para ver el gráfico",
+    "emptyProfitChart": "📊 No hay datos de beneficios de ventas"
+  },
+  "create": {
+    "title": "Nueva operación",
+    "type": "Tipo de operación",
+    "buy": "Comprar USDT",
+    "sell": "Vender USDT",
+    "date": "Fecha (DD.MM.AA)",
+    "amountRub": "Cantidad (RUB)",
+    "amountUsdt": "Cantidad USDT",
+    "price": "Precio por 1 USDT",
+    "paymentMethod": "Método de pago",
+    "dealNumber": "Número de operación",
+    "checkLink": "Enlace del comprobante",
+    "submit": "Guardar operación",
+    "success": "✅ Operación añadida!",
+    "fillFields": "Complete los campos",
+    "invalidDate": "Formato de fecha inválido (DD.MM.AA)"
+  },
+  "calculator": {
+    "title": "Calcular cantidad de USDT",
+    "rubAmount": "Cantidad en RUB",
+    "usdtRate": "Tasa USDT (RUB)",
+    "calculate": "Calcular",
+    "result": "Recibirás:",
+    "resultPlaceholder": "El resultado aparecerá aquí",
+    "secondTitle": "Calcular precio de compra",
+    "secondRub": "Cantidad RUB",
+    "secondUsdt": "USDT recibidos",
+    "secondCalculate": "Calcular precio",
+    "secondResult": "Precio por 1 USDT:",
+    "fillBoth": "Complete ambos campos"
+  },
+  "more": {
+    "support": "Soporte",
+    "supportDesc": "¡Escríbenos si encuentras un error o tienes ideas!",
+    "supportBtn": "Abrir chat",
+    "import": "Importar operaciones P2P de Telegram Wallet",
+    "importReplace": "Reemplazar todo",
+    "importAdd": "Añadir",
+    "syncStatus": "Estado de sincronización",
+    "noFile": "Seleccione archivo Excel de Telegram Wallet",
+    "importSuccess": "Importadas",
+    "deals": "operaciones! Omitidas:",
+    "replaceConfirm": "Reemplazar eliminará todas las operaciones actuales"
+  },
+  "deal": {
+    "buy": "Comprar USDT",
+    "sell": "Vender USDT",
+    "price": "Precio por 1 USDT",
+    "margin": "Margen",
+    "paymentMethod": "Método de pago",
+    "dealNumber": "Número de operación",
+    "checkLink": "Enlace",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "deleteConfirm": "¿Eliminar operación?",
+    "insufficient": "⚠️ USDT insuficiente",
+    "noPurchases": "— (sin compras)"
+  },
+  "modal": {
+    "history": "Historial completo",
+    "search": "Buscar por contraparte o comentario",
+    "all": "Todos",
+    "buys": "Compras",
+    "sells": "Ventas",
+    "editTitle": "Editar operación",
+    "save": "Guardar cambios",
+    "cancel": "Cancelar",
+    "noDealsFound": "📭 No se encontraron operaciones"
+  },
+  "sync": {
+    "cloud": "Sincronización en la nube",
+    "active": "Sincronización activa",
+    "local": "Almacenamiento local",
+    "error": "Error de sincronización",
+    "savedLocal": "Datos guardados localmente",
+    "savedCloud": "Datos sincronizados con la nube",
+    "loadedCloud": "Cargados desde la nube",
+    "loadedLocal": "Datos cargados desde almacenamiento local",
+    "empty": "La nube está vacía, comienza a añadir operaciones",
+    "checking": "Comprobando conexión...",
+    "checkBtn": "Verificar sincronización",
+    "recommendation": "Abre la app desde Telegram para sincronización en la nube",
+    "telegramStatus": "Telegram WebApp",
+    "cloudStorage": "Almacenamiento en la nube",
+    "dealsCount": "Operaciones en la base de datos",
+    "available": "Disponible",
+    "unavailable": "No disponible"
+  },
+  "currencies": {
+    "usd": "USD",
+    "eur": "EUR",
+    "cny": "CNY"
+  },
+  "common": {
+    "ruble": "RUB",
+    "yes": "Sí",
+    "no": "No",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar"
+  }
+}

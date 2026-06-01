@@ -1,0 +1,126 @@
+{
+  "app": {
+    "name": "P2P Tracker Pro"
+  },
+  "tabs": {
+    "home": "Ana Sayfa",
+    "create": "Oluştur",
+    "calculator": "Hesap Makinesi",
+    "more": "Diğer"
+  },
+  "home": {
+    "realProfit": "Gerçek kar (RUB)",
+    "statistics": "P2P İstatistikleri",
+    "turnover": "Ciro (RUB)",
+    "totalDeals": "Toplam işlem",
+    "profitChart": "Aylık kar grafiği",
+    "recentOperations": "Son işlemler",
+    "buys": "Alış",
+    "sells": "Satış",
+    "showAllHistory": "Tüm geçmişi göster",
+    "deleteAll": "Tüm işlemleri sil",
+    "noDeals": "📭 İşlem yok",
+    "emptyChart": "📊 Grafik için işlem ekleyin",
+    "emptyProfitChart": "📊 Satışlardan kar verisi yok"
+  },
+  "create": {
+    "title": "Yeni işlem",
+    "type": "İşlem tipi",
+    "buy": "USDT Al",
+    "sell": "USDT Sat",
+    "date": "İşlem tarihi (GG.AA.YY)",
+    "amountRub": "Tutar (RUB)",
+    "amountUsdt": "USDT miktarı",
+    "price": "1 USDT fiyatı",
+    "paymentMethod": "Ödeme yöntemi",
+    "dealNumber": "İşlem numarası",
+    "checkLink": "Ödeme makbuzu bağlantısı",
+    "submit": "İşlemi kaydet",
+    "success": "✅ İşlem eklendi!",
+    "fillFields": "Alanları doldurun",
+    "invalidDate": "Geçersiz tarih formatı (GG.AA.YY)"
+  },
+  "calculator": {
+    "title": "Alınacak USDT miktarını hesapla",
+    "rubAmount": "RUB cinsinden tutar",
+    "usdtRate": "USDT kuru (RUB)",
+    "calculate": "Hesapla",
+    "result": "Alacağınız miktar:",
+    "resultPlaceholder": "Sonuç burada görünecek",
+    "secondTitle": "Alış fiyatını hesapla",
+    "secondRub": "RUB tutarı",
+    "secondUsdt": "Alınan USDT",
+    "secondCalculate": "Fiyatı hesapla",
+    "secondResult": "1 USDT fiyatı:",
+    "fillBoth": "Her iki alanı da doldurun"
+  },
+  "more": {
+    "support": "Destek",
+    "supportDesc": "Hata bulursanız veya fikirleriniz varsa bize yazın!",
+    "supportBtn": "Sohbeti aç",
+    "import": "Telegram Wallet\'dan P2P işlemlerini içe aktar",
+    "importReplace": "Tümünü değiştir",
+    "importAdd": "Ekle",
+    "syncStatus": "Senkronizasyon durumu",
+    "noFile": "Telegram Wallet\'dan Excel dosyası seçin",
+    "importSuccess": "İçe aktarıldı",
+    "deals": "işlem! Atlanan:",
+    "replaceConfirm": "Değiştirme tüm mevcut işlemleri silecek"
+  },
+  "deal": {
+    "buy": "USDT Al",
+    "sell": "USDT Sat",
+    "price": "1 USDT fiyatı",
+    "margin": "Marj",
+    "paymentMethod": "Ödeme yöntemi",
+    "dealNumber": "İşlem numarası",
+    "checkLink": "Bağlantı",
+    "edit": "Düzenle",
+    "delete": "Sil",
+    "deleteConfirm": "İşlem silinsin mi?",
+    "insufficient": "⚠️ Yetersiz USDT",
+    "noPurchases": "— (alış yok)"
+  },
+  "modal": {
+    "history": "Tüm geçmiş",
+    "search": "Karşı taraf veya yoruma göre ara",
+    "all": "Tümü",
+    "buys": "Alışlar",
+    "sells": "Satışlar",
+    "editTitle": "İşlemi düzenle",
+    "save": "Değişiklikleri kaydet",
+    "cancel": "İptal",
+    "noDealsFound": "📭 İşlem bulunamadı"
+  },
+  "sync": {
+    "cloud": "Bulut senkronizasyonu",
+    "active": "Senkronizasyon aktif",
+    "local": "Yerel depolama",
+    "error": "Senkronizasyon hatası",
+    "savedLocal": "Veriler yerel olarak kaydedildi",
+    "savedCloud": "Veriler bulutla senkronize edildi",
+    "loadedCloud": "Buluttan yüklendi",
+    "loadedLocal": "Veriler yerel depolamadan yüklendi",
+    "empty": "Bulut boş, işlem eklemeye başlayın",
+    "checking": "Bağlantı kontrol ediliyor...",
+    "checkBtn": "Senkronizasyonu kontrol et",
+    "recommendation": "Bulut senkronizasyonu için uygulamayı Telegram üzerinden açın",
+    "telegramStatus": "Telegram WebApp",
+    "cloudStorage": "Bulut Depolama",
+    "dealsCount": "Veritabanındaki işlemler",
+    "available": "Mevcut",
+    "unavailable": "Mevcut değil"
+  },
+  "currencies": {
+    "usd": "USD",
+    "eur": "EUR",
+    "cny": "CNY"
+  },
+  "common": {
+    "ruble": "RUB",
+    "yes": "Evet",
+    "no": "Hayır",
+    "cancel": "İptal",
+    "confirm": "Onayla"
+  }
+}

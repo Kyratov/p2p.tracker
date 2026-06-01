@@ -251,3 +251,18 @@ function initData() {
     loadDataFromCloud();
     setInterval(fetchExchangeRates, 60000);
 }
+
+// Функция очистки всех данных (если она здесь)
+function clearAllDeals() {
+    if (confirm(t('home.deleteAllConfirm') || '⚠️ Вы уверены, что хотите удалить ВСЕ сделки? Это действие необратимо!')) {
+        deals = [];
+        saveData();
+        renderAll();
+        updateStats();
+        if (typeof showSuccess === 'function') {
+            showSuccess('home.deleteAllSuccess');
+        } else {
+            alert('✅ Все сделки удалены');
+        }
+    }
+}
