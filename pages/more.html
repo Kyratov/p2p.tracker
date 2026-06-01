@@ -1,0 +1,37 @@
+<div id="supportTab" class="tab-content">
+    <div class="card">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+            <div style="font-size: 28px;">🛟</div>
+            <h2 id="supportTitle" style="margin-bottom: 0;">Support</h2>
+        </div>
+        <p id="supportDesc" style="margin-bottom: 16px; font-size: 13px; color: #64748b;">Contact us if you find a bug or have suggestions</p>
+        <button id="supportBtn" class="btn" data-key="openChatBtn">Open Chat</button>
+    </div>
+    
+    <div class="card">
+        <h2 id="languageTitle">App Language</h2>
+        <div class="lang-selector">
+            <button id="langRuBtn" class="lang-btn">Русский</button>
+            <button id="langEnBtn" class="lang-btn active">English</button>
+        </div>
+    </div>
+    
+    <div class="card">
+        <h2 id="importTitle">Import from Telegram Wallet</h2>
+        <input type="file" id="telegramImportFile" class="file-input" accept=".xlsx, .xls">
+        <div class="flex-buttons">
+            <button id="importReplaceBtn" class="btn" data-key="replaceAllBtn">Replace All</button>
+            <button id="importAddBtn" class="btn-green" data-key="addBtn">Add</button>
+        </div>
+    </div>
+    
+    <div class="card">
+        <h2 id="syncTitle">Sync Status</h2>
+        <div id="syncStatusContainer" class="sync-status-card">
+            <div class="sync-header">
+                <div class="sync-icon info">☁️</div>
+                <div class="sync-title" id="syncLoading">Loading...</div>
+            </div>
+        </div>
+    </div>
+</div> 

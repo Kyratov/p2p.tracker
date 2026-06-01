@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>P2P Tracker Pro — Telegram Mini App</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+
+<div id="onboardingOverlay" class="onboarding-overlay hide">
+    <div class="onboarding-card">
+        <div class="onboarding-icon" id="onbIcon">📊</div>
+        <div class="onboarding-title" id="onbTitle">P2P Tracker Pro</div>
+        <div class="onboarding-desc" id="onbDesc">Professional P2P deal tracking for Telegram</div>
+        <div class="onboarding-progress" id="onbProgress"></div>
+        <button class="onboarding-btn" id="onbNextBtn">Continue →</button>
+        <button class="onboarding-skip" id="onbSkipBtn">Skip</button>
+    </div>
+</div>
+
+<button class="theme-toggle" id="themeToggle">🌙</button>
+
+<div class="container" id="appContainer">
+    <!-- Сюда будут загружаться страницы -->
+</div>
+
+<div id="tabsContainer">
+    <!-- Сюда будет загружаться нижнее меню -->
+</div>
+
+<div id="modalsContainer">
+    <!-- Сюда будут загружаться модальные окна -->
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/language.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/import.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html> 

@@ -1,0 +1,28 @@
+<div id="calculatorTab" class="tab-content">
+    <div class="card">
+        <h2 id="calcTitle1">Calculate USDT Amount</h2>
+        <div class="input-group">
+            <label id="calcRubLabel">Amount (RUB)</label>
+            <input type="number" id="calcRub" placeholder="Enter amount">
+        </div>
+        <div class="input-group">
+            <label id="calcRateLabel">USDT Rate (RUB)</label>
+            <input type="number" id="calcRate" placeholder="Rate per 1 USDT" value="">
+        </div>
+        <button id="calcBtn" class="btn" data-key="calculateBtn">Calculate</button>
+        <input type="text" id="calcResultField" class="result-field" readonly placeholder="Result will appear here">
+    </div>
+    <div class="card">
+        <h2 id="calcTitle2">Calculate Purchase Rate</h2>
+        <div class="input-group">
+            <label id="quickRubLabel">Amount (RUB)</label>
+            <input type="number" id="quickRub" placeholder="Amount">
+        </div>
+        <div class="input-group">
+            <label id="quickUsdtLabel">USDT Received</label>
+            <input type="number" id="quickUsdt" placeholder="USDT">
+        </div>
+        <button id="quickCalcBtn" class="btn-green" data-key="calculateRateBtn">Calculate Rate</button>
+        <input type="text" id="quickResultField" class="result-field" readonly placeholder="Result will appear here">
+    </div>
+</div>

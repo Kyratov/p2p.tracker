@@ -1,0 +1,45 @@
+<div id="createTab" class="tab-content">
+    <div class="card">
+        <h2 id="newDealTitle">New Deal</h2>
+        <form id="dealForm">
+            <div class="input-group">
+                <label id="dealTypeLabel">Deal Type</label>
+                <div class="select-wrapper">
+                    <select id="dealType" required>
+                        <option value="buy" data-key="buyUsdt">Buy USDT</option>
+                        <option value="sell" data-key="sellUsdt">Sell USDT</option>
+                    </select>
+                </div>
+            </div>
+            <div class="input-group">
+                <label id="dealDateLabel">Deal Date (DD.MM.YY)</label>
+                <input type="text" id="dealDate" placeholder="" maxlength="10">
+            </div>
+            <div class="input-group">
+                <label id="amountLabel">Amount (RUB)</label>
+                <input type="number" id="amountPaid" placeholder="" step="0.01">
+            </div>
+            <div class="input-group">
+                <label id="usdtAmountLabel">USDT Amount</label>
+                <input type="number" id="usdtAmount" placeholder="" step="0.01">
+            </div>
+            <div class="input-group">
+                <label id="priceLabel">Price per 1 USDT</label>
+                <input type="number" id="pricePerUsdt" placeholder="" step="0.01">
+            </div>
+            <div class="input-group">
+                <label id="paymentMethodLabel">Payment Method</label>
+                <input type="text" id="counterparty" placeholder="Sberbank / T-Bank / SBP">
+            </div>
+            <div class="input-group">
+                <label id="dealNumberLabel">Deal Number</label>
+                <input type="text" id="dealNumber" placeholder="">
+            </div>
+            <div class="input-group">
+                <label id="receiptLinkLabel">Payment Receipt Link</label>
+                <textarea id="comment" rows="2"></textarea>
+            </div>
+            <button type="submit" class="btn" id="saveDealBtn">Save Deal</button>
+        </form>
+    </div>
+</div>
