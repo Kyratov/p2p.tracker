@@ -4,7 +4,909 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>P2P Tracker Pro — Telegram Mini App</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Inter', 'Segoe UI', Roboto, Helvetica, sans-serif;
+            background: #f0f2f5;
+            color: #1e293b;
+            padding-bottom: 80px;
+            animation: fadeIn 0.4s ease;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px 16px;
+        }
+
+        .tabs {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255,255,255,0.96);
+            backdrop-filter: blur(20px);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 20px 24px;
+            border-top: 1px solid rgba(0,0,0,0.08);
+            z-index: 100;
+            transition: background 0.3s;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #94a3b8;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 40px;
+        }
+
+        .tab-btn svg {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            fill: none;
+        }
+
+        .tab-btn.active {
+            color: #3b82f6;
+            background: #eef2ff;
+        }
+
+        .tab-content {
+            display: none;
+            animation: slideUp 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(12px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            border: 1px solid #e5e7eb;
+            transition: background 0.3s, box-shadow 0.3s, border-color 0.3s;
+        }
+
+        h2 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #1e293b;
+            transition: color 0.3s;
+        }
+
+        .profit-block {
+            background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+            border-radius: 28px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: white;
+            border: none;
+        }
+        
+        .profit-block .label {
+            font-size: 13px;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+        
+        .profit-block .value {
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .rates-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .rate-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 14px 8px;
+            text-align: center;
+            color: #1e293b;
+            transition: transform 0.2s;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+        }
+        
+        body.dark .rate-card {
+            background: #1e293b;
+            color: #f1f5f9;
+            border-color: #334155;
+        }
+        
+        .rate-card .currency {
+            font-size: 14px;
+            font-weight: 600;
+            opacity: 0.8;
+            margin-bottom: 6px;
+        }
+        
+        .rate-card .value {
+            font-size: 18px;
+            font-weight: 700;
+        }
+        
+        .rate-card .update-time {
+            font-size: 9px;
+            opacity: 0.6;
+            margin-top: 6px;
+            color: #64748b;
+        }
+        
+        body.dark .rate-card .update-time {
+            color: #94a3b8;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: 500;
+            display: block;
+            margin-bottom: 6px;
+            color: #64748b;
+            transition: color 0.3s;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 24px;
+            font-size: 15px;
+            background: #ffffff;
+            transition: 0.2s, background 0.3s, border-color 0.3s, color 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+        }
+
+        /* Единый стиль для всех кнопок */
+        .btn, .btn-green, .btn-red, .center-btn {
+            display: block;
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+            border: none;
+            box-sizing: border-box;
+        }
+        
+        .btn {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .btn-green {
+            background: #10b981;
+            color: white;
+        }
+        
+        .btn-red {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .center-btn {
+            background: #f1f5f9;
+            color: #1e293b;
+            border: 1px solid #e5e7eb;
+        }
+        
+        body.dark .center-btn {
+            background: #334155;
+            color: #f1f5f9;
+            border-color: #475569;
+        }
+        
+        body.dark .btn {
+            background: #2563eb;
+        }
+        
+        body.dark .btn-green {
+            background: #059669;
+        }
+        
+        body.dark .btn-red {
+            background: #dc2626;
+        }
+        
+        .btn:active, .btn-green:active, .btn-red:active, .center-btn:active {
+            transform: scale(0.97);
+        }
+
+        .deals-stats-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .deal-stat-chip {
+            flex: 1;
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 12px;
+            text-align: center;
+            transition: background 0.3s;
+            border: 1px solid #e5e7eb;
+        }
+        
+        body.dark .deal-stat-chip {
+            background: #1e293b;
+            border-color: #334155;
+        }
+        
+        .deal-stat-chip .label {
+            font-size: 11px;
+            color: #64748b;
+            transition: color 0.3s;
+        }
+        
+        .deal-stat-chip .value {
+            font-size: 20px;
+            font-weight: 700;
+            margin-top: 4px;
+            transition: color 0.3s;
+        }
+        
+        .info-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+            margin-top: 8px;
+            padding: 5px 8px;
+            background: #f8fafc;
+            border-radius: 14px;
+            font-size: 11px;
+            transition: background 0.3s, color 0.3s;
+            flex-wrap: wrap;
+            word-break: break-all;
+            overflow-wrap: break-word;
+        }
+        
+        body.dark .info-row {
+            background: #334155;
+        }
+        
+        .info-label {
+            font-weight: 500;
+            color: #64748b;
+        }
+        
+        body.dark .info-label {
+            color: #94a3b8;
+        }
+        
+        .info-row a {
+            color: #3b82f6;
+            text-decoration: none;
+            word-break: break-all;
+        }
+        
+        .info-value {
+            font-weight: 600;
+        }
+        
+        .info-value.positive {
+            color: #10b981;
+        }
+        
+        .info-value.negative {
+            color: #ef4444;
+        }
+        
+        .transaction-card {
+            background: #ffffff;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+            transition: background 0.3s, border-color 0.3s;
+        }
+        
+        body.dark .transaction-card {
+            background: #1e293b;
+            border-color: #334155;
+        }
+        
+        .transaction-header {
+            padding: 12px 14px 6px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .transaction-type {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .type-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        
+        .type-icon.buy {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+        }
+        
+        .type-icon.sell {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+        }
+    
+        .type-name {
+            font-weight: 600;
+            font-size: 14px;
+            transition: color 0.3s;
+            color: #1e293b;
+        }
+        
+        body.dark .type-name {
+            color: #f1f5f9;
+        }
+        
+        .transaction-date {
+            font-size: 10px;
+            color: #94a3b8;
+            transition: color 0.3s;
+        }
+        
+        .transaction-body {
+            padding: 6px 14px 12px 14px;
+        }
+        
+        .amount-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 10px;
+        }
+        
+        .rub-amount {
+            font-size: 18px;
+            font-weight: 700;
+            transition: color 0.3s;
+        }
+        
+        .usdt-amount {
+            font-size: 18px;
+            font-weight: 700;
+            color: #3b82f6;
+        }
+        
+        .transaction-footer {
+            padding: 8px 14px 12px 14px;
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            border-top: 1px solid #e8ecf0;
+            transition: border-color 0.3s;
+        }
+        
+        body.dark .transaction-footer {
+            border-top-color: #334155;
+        }
+        
+        .action-btn {
+            background: none;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 13px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.2s;
+        }
+        
+        .action-btn.edit {
+            color: #3b82f6;
+            background: rgba(59,130,246,0.1);
+        }
+        
+        .action-btn.delete {
+            color: #ef4444;
+            background: rgba(239,68,68,0.1);
+        }
+        
+        .action-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .search-history {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .search-history .search-box {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 16px;
+            border-radius: 30px;
+            border: 1px solid #e2e8f0;
+            font-size: 13px;
+            background: #ffffff;
+            transition: background 0.3s, border-color 0.3s, color 0.3s;
+        }
+        
+        body.dark .search-box input {
+            background: #0f172a;
+            border-color: #334155;
+            color: #f1f5f9;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-pill {
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            color: #475569;
+            transition: 0.2s;
+        }
+        
+        body.dark .filter-pill {
+            background: #334155;
+            border-color: #475569;
+            color: #e2e8f0;
+        }
+        
+        .filter-pill.active {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #94a3b8;
+            font-size: 13px;
+            transition: color 0.3s;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+        
+        .modal-content {
+            background: #ffffff;
+            border-radius: 32px;
+            padding: 24px;
+            width: 100%;
+            max-width: 480px;
+            max-height: 85vh;
+            overflow-y: auto;
+            transition: background 0.3s;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 20px 35px -10px rgba(0,0,0,0.2);
+        }
+        
+        body.dark .modal-content {
+            background: #1e293b;
+            border-color: #334155;
+        }
+        
+        .modal-content h3 {
+            font-size: 22px;
+            margin-bottom: 20px;
+            text-align: center;
+            transition: color 0.3s;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .select-wrapper {
+            position: relative;
+        }
+
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            padding: 12px 40px 12px 16px;
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 24px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+        
+        body.dark select {
+            background: #0f172a;
+            border-color: #334155;
+            color: #f1f5f9;
+        }
+
+        .select-wrapper::after {
+            content: "▼";
+            font-size: 11px;
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: #fbbf24;
+        }
+
+        .onboarding-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(12px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s;
+        }
+        .onboarding-overlay.hide {
+            display: none;
+        }
+        .onboarding-card {
+            background: linear-gradient(145deg, #ffffff, #f8fafc);
+            border-radius: 64px;
+            max-width: 360px;
+            width: 85%;
+            padding: 36px 28px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+        }
+        body.dark .onboarding-card {
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+        }
+        .onboarding-icon { font-size: 72px; margin-bottom: 20px; animation: bounce 0.6s ease; }
+        @keyframes bounce { 0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)} }
+        .onboarding-title { font-size: 26px; font-weight: 800; background: linear-gradient(135deg,#3b82f6,#8b5cf6); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 12px; }
+        .onboarding-desc { font-size: 14px; color: #64748b; margin-bottom: 24px; line-height: 1.5; }
+        body.dark .onboarding-desc { color: #94a3b8; }
+        .onboarding-progress { display: flex; justify-content: center; gap: 8px; margin-bottom: 24px; }
+        .progress-dot { width: 8px; height: 8px; border-radius: 50%; background: #cbd5e1; transition: all 0.3s; }
+        .progress-dot.active { background: #3b82f6; width: 24px; border-radius: 4px; }
+        .onboarding-btn { background: #3b82f6; color: white; border: none; padding: 14px 28px; border-radius: 60px; font-weight: 600; font-size: 16px; width: 100%; cursor: pointer; }
+        .onboarding-btn:active { transform: scale(0.97); }
+        .onboarding-skip { background: none; border: none; color: #94a3b8; margin-top: 16px; font-size: 13px; cursor: pointer; }
+
+        body.dark {
+            background: #0f172a;
+            color: #f1f5f9;
+        }
+        
+        body.dark .card {
+            background: #1e293b;
+            border-color: #334155;
+        }
+        
+        body.dark h2 {
+            color: #f1f5f9;
+        }
+        
+        body.dark .tabs {
+            background: rgba(30,41,59,0.95);
+            border-top-color: #334155;
+        }
+        
+        body.dark .tab-btn {
+            color: #94a3b8;
+        }
+        
+        body.dark .tab-btn.active {
+            background: #1e3a5f;
+            color: #a78bfa;
+        }
+        
+        body.dark input, body.dark textarea {
+            background: #0f172a;
+            border-color: #334155;
+            color: #f1f5f9;
+        }
+        
+        .flex-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+        }
+        .file-input {
+            margin-bottom: 16px;
+            padding: 12px 16px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 24px;
+            font-size: 14px;
+            width: 100%;
+            background: #ffffff;
+        }
+        body.dark .file-input {
+            background: #0f172a;
+            border-color: #334155;
+            color: #f1f5f9;
+        }
+        
+        .mt-3 {
+            margin-top: 12px;
+        }
+        
+        .result-field {
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 24px;
+            padding: 12px 16px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+            cursor: default;
+            text-align: center;
+            margin-top: 16px;
+        }
+        
+        body.dark .result-field {
+            background: #334155;
+            border-color: #475569;
+            color: #f1f5f9;
+        }
+        
+        /* Настройки */
+        .settings-group {
+            margin-bottom: 20px;
+        }
+        
+        .settings-group:last-child {
+            margin-bottom: 0;
+        }
+        
+        .settings-title {
+            font-size: 13px;
+            font-weight: 500;
+            color: #64748b;
+            margin-bottom: 12px;
+            display: block;
+        }
+        
+        /* Флаги в одну строку */
+        .language-buttons {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 8px;
+            margin-bottom: 16px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+        
+        .lang-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+            background: #f1f5f9;
+            border: 1px solid #e5e7eb;
+            flex-shrink: 0;
+        }
+        
+        body.dark .lang-option {
+            background: #334155;
+            border-color: #475569;
+        }
+        
+        .lang-option.active {
+            background: #3b82f6;
+            border-color: #3b82f6;
+            transform: scale(1.05);
+        }
+        
+        .theme-options {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .theme-option {
+            flex: 1;
+            padding: 12px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.2s;
+            background: #f1f5f9;
+            color: #1e293b;
+            border: 1px solid #e5e7eb;
+        }
+        
+        body.dark .theme-option {
+            background: #334155;
+            color: #f1f5f9;
+            border-color: #475569;
+        }
+        
+        /* В тёмной теме активная кнопка темы должна быть синей */
+        .theme-option.active {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        
+        body.dark .theme-option.active {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        
+        /* Синхронизация */
+        .sync-card {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 16px;
+            transition: background 0.3s;
+        }
+        
+        body.dark .sync-card {
+            background: #1e293b;
+        }
+        
+        .sync-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        body.dark .sync-row {
+            border-bottom-color: #334155;
+        }
+        
+        .sync-row:last-child {
+            border-bottom: none;
+        }
+        
+        .sync-label {
+            font-size: 13px;
+            color: #64748b;
+        }
+        
+        .sync-value {
+            font-size: 13px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .sync-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .sync-badge.success {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+        }
+        
+        .sync-badge.warning {
+            background: rgba(245, 158, 11, 0.15);
+            color: #f59e0b;
+        }
+        
+        .sync-badge.error {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+        }
+        
+        .sync-badge.info {
+            background: rgba(59, 130, 246, 0.15);
+            color: #3b82f6;
+        }
+        
+        .sync-message-text {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 8px;
+            padding-top: 8px;
+        }
+        
+        .mt-2 {
+            margin-top: 12px;
+        }
+    </style>
     <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
 </head>
 <body>
@@ -13,31 +915,677 @@
     <div class="onboarding-card">
         <div class="onboarding-icon" id="onbIcon">📊</div>
         <div class="onboarding-title" id="onbTitle">P2P Tracker Pro</div>
-        <div class="onboarding-desc" id="onbDesc">Professional P2P deal tracking for Telegram</div>
+        <div class="onboarding-desc" id="onbDesc">Умный учёт P2P сделок в Telegram</div>
         <div class="onboarding-progress" id="onbProgress"></div>
-        <button class="onboarding-btn" id="onbNextBtn">Continue →</button>
-        <button class="onboarding-skip" id="onbSkipBtn">Skip</button>
+        <button class="onboarding-btn" id="onbNextBtn">Продолжить →</button>
+        <button class="onboarding-skip" id="onbSkipBtn">Пропустить</button>
     </div>
 </div>
 
-<button class="theme-toggle" id="themeToggle">🌙</button>
+<div class="container">
+    <div id="homeTab" class="tab-content active">
+        <div class="profit-block">
+            <div class="label" data-i18n="home.realProfit">Реальная прибыль (RUB)</div>
+            <div class="value" id="totalProfitRub">0 ₽</div>
+        </div>
+        
+        <div class="rates-grid">
+            <div class="rate-card"><div class="currency" data-i18n="currencies.usd">USD</div><div class="value" id="usdRate">—</div><div class="update-time" id="usdUpdate">—</div></div>
+            <div class="rate-card"><div class="currency" data-i18n="currencies.eur">EUR</div><div class="value" id="eurRate">—</div><div class="update-time" id="eurUpdate">—</div></div>
+            <div class="rate-card"><div class="currency" data-i18n="currencies.cny">CNY</div><div class="value" id="cnyRate">—</div><div class="update-time" id="cnyUpdate">—</div></div>
+        </div>
 
-<div class="container" id="appContainer">
-    <!-- Сюда будут загружаться страницы -->
+        <div class="card">
+            <div class="deals-header"><h2 data-i18n="home.recentOperations">Последние операции</h2></div>
+            <div class="deals-stats-row">
+                <div class="deal-stat-chip"><div class="label" data-i18n="home.buys">Покупок</div><div class="value" id="totalBuysCount">0</div></div>
+                <div class="deal-stat-chip"><div class="label" data-i18n="home.sells">Продаж</div><div class="value" id="totalSellsCount">0</div></div>
+            </div>
+            <div id="recentDealsList"></div>
+            <button id="showAllHistoryBtn" class="center-btn" data-i18n="home.showAllHistory">Показать всю историю сделок</button>
+            <button id="clearAllDataBtn" class="btn-red mt-3" data-i18n="home.deleteAll">Удалить все сделки</button>
+        </div>
+    </div>
+
+    <div id="historyModal" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 550px; max-height: 80vh; overflow-y: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h3 style="margin-bottom: 0;" data-i18n="modal.history">Вся история</h3>
+                <button id="closeHistoryBtn" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #64748b;">&times;</button>
+            </div>
+            <div class="search-history">
+                <div class="search-box"><input type="text" id="historySearchInput" data-i18n-placeholder="modal.search" placeholder="Поиск"></div>
+            </div>
+            <div class="filter-buttons">
+                <button class="filter-pill active" data-history-filter="all" data-i18n="modal.all">Все</button>
+                <button class="filter-pill" data-history-filter="buy" data-i18n="modal.buys">Покупки</button>
+                <button class="filter-pill" data-history-filter="sell" data-i18n="modal.sells">Продажи</button>
+            </div>
+            <div id="historyDealsList"></div>
+        </div>
+    </div>
+
+    <div id="createTab" class="tab-content">
+        <div class="card">
+            <h2 data-i18n="create.title">Новая сделка</h2>
+            <form id="dealForm">
+                <div class="input-group"><label data-i18n="create.type">Тип операции</label><div class="select-wrapper"><select id="dealType" required><option value="buy" data-i18n="create.buy">Покупка USDT</option><option value="sell" data-i18n="create.sell">Продажа USDT</option></select></div></div>
+                <div class="input-group"><label data-i18n="create.date">Дата сделки (ДД.ММ.ГГ)</label><input type="text" id="dealDate" data-i18n-placeholder="create.date" placeholder="" maxlength="10"></div>
+                <div class="input-group"><label data-i18n="create.amountRub">Сумма оплаты (RUB)</label><input type="number" id="amountPaid" data-i18n-placeholder="create.amountRub" placeholder="" step="0.01"></div>
+                <div class="input-group"><label data-i18n="create.amountUsdt">Количество USDT</label><input type="number" id="usdtAmount" data-i18n-placeholder="create.amountUsdt" placeholder="" step="0.01"></div>
+                <div class="input-group"><label data-i18n="create.price">Цена за 1 USDT</label><input type="number" id="pricePerUsdt" data-i18n-placeholder="create.price" placeholder="Цена" step="0.01"></div>
+                <div class="input-group"><label data-i18n="create.paymentMethod">Метод оплаты</label><input type="text" id="counterparty" data-i18n-placeholder="create.paymentMethod" placeholder="Способ оплаты"></div>
+                <div class="input-group"><label data-i18n="create.dealNumber">Номер сделки</label><input type="text" id="dealNumber" data-i18n-placeholder="create.dealNumber" placeholder=""></div>
+                <div class="input-group"><label data-i18n="create.checkLink">Ссылка на чек</label><textarea id="comment" rows="2" data-i18n-placeholder="create.checkLink"></textarea></div>
+                <button type="submit" class="btn" data-i18n="create.submit">Записать сделку</button>
+            </form>
+        </div>
+    </div>
+    
+    <div id="calculatorTab" class="tab-content">
+        <div class="card">
+            <h2 data-i18n="calculator.title">Количество USDT</h2>
+            <div class="input-group"><label data-i18n="calculator.rubAmount">Сумма в RUB</label><input type="number" id="calcRub" data-i18n-placeholder="calculator.rubAmount" placeholder="Сумма"></div>
+            <div class="input-group"><label data-i18n="calculator.usdtRate">Курс USDT (₽)</label><input type="number" id="calcRate" data-i18n-placeholder="calculator.usdtRate" placeholder="Курс" value=""></div>
+            <button id="calcBtn" class="btn" data-i18n="calculator.calculate">Рассчитать</button>
+            <input type="text" id="calcResultField" class="result-field" readonly data-i18n-placeholder="calculator.resultPlaceholder" placeholder="Результат">
+        </div>
+        <div class="card">
+            <h2 data-i18n="calculator.secondTitle">Курс покупки</h2>
+            <div class="input-group"><label data-i18n="calculator.secondRub">Сумма RUB</label><input type="number" id="quickRub" data-i18n-placeholder="calculator.secondRub" placeholder="Сумма"></div>
+            <div class="input-group"><label data-i18n="calculator.secondUsdt">Получено USDT</label><input type="number" id="quickUsdt" data-i18n-placeholder="calculator.secondUsdt" placeholder="USDT"></div>
+            <button id="quickCalcBtn" class="btn-green" data-i18n="calculator.secondCalculate">Узнать цену</button>
+            <input type="text" id="quickResultField" class="result-field" readonly data-i18n-placeholder="calculator.resultPlaceholder" placeholder="Результат">
+        </div>
+    </div>
+
+    <div id="supportTab" class="tab-content">
+        <div class="card">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                <div style="font-size: 32px;">🛟</div>
+                <h2 style="margin-bottom: 0;" data-i18n="more.support">Техподдержка</h2>
+            </div>
+            <p style="margin-bottom: 16px; font-size: 13px; color: #64748b;" data-i18n="more.supportDesc">Напишите нам, если нашли баг или есть идеи</p>
+            <button id="supportBtn" class="btn" data-i18n="more.supportBtn">Открыть чат</button>
+        </div>
+        
+        <div class="card">
+            <h2 data-i18n="more.import">Импорт из Telegram Wallet</h2>
+            <input type="file" id="telegramImportFile" class="file-input" accept=".xlsx, .xls">
+            <button id="importAddBtn" class="btn" data-i18n="more.importAdd">Добавить</button>
+        </div>
+        
+        <div class="card">
+            <h2 data-i18n="more.settings">Настройки</h2>
+            
+            <div class="settings-group">
+                <div class="settings-title" data-i18n="more.language">Язык</div>
+                <div class="language-buttons" id="languageButtons"></div>
+            </div>
+            
+            <div class="settings-group">
+                <div class="settings-title" data-i18n="more.theme">Тема</div>
+                <div class="theme-options">
+                    <div class="theme-option" data-theme="light" data-i18n="more.themeLight">Светлая</div>
+                    <div class="theme-option" data-theme="dark" data-i18n="more.themeDark">Тёмная</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2 data-i18n="more.syncStatus">Синхронизация</h2>
+            <div id="syncContainer">
+                <div class="sync-card">
+                    <div class="sync-row">
+                        <span class="sync-label">Telegram WebApp</span>
+                        <span class="sync-value" id="syncTelegramStatus">—</span>
+                    </div>
+                    <div class="sync-row">
+                        <span class="sync-label">Cloud Storage</span>
+                        <span class="sync-value" id="syncCloudStatus">—</span>
+                    </div>
+                    <div class="sync-row">
+                        <span class="sync-label">Сделок в базе</span>
+                        <span class="sync-value" id="syncDealsCount">0</span>
+                    </div>
+                    <div class="sync-message-text" id="syncMessage"></div>
+                </div>
+            </div>
+            <button id="manualSyncBtn" class="btn mt-2" data-i18n="more.syncBtn">Проверить синхронизацию</button>
+        </div>
+    </div>
 </div>
 
-<div id="tabsContainer">
-    <!-- Сюда будет загружаться нижнее меню -->
+<div class="tabs">
+    <button class="tab-btn active" data-tab="home">
+        <svg viewBox="0 0 24 24" stroke="currentColor"><path d="M3 9.5L12 3l9 6.5M5 10v9a1 1 0 0 0 1 1h3v-5h6v5h3a1 1 0 0 0 1-1v-9"/></svg>
+        <span data-i18n="tabs.home">Главная</span>
+    </button>
+    <button class="tab-btn" data-tab="create">
+        <svg viewBox="0 0 24 24" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>
+        <span data-i18n="tabs.create">Создать</span>
+    </button>
+    <button class="tab-btn" data-tab="calculator">
+        <svg viewBox="0 0 24 24" stroke="currentColor"><path d="M4 4h16v16H4zM8 8h8M8 12h8M8 16h4"/></svg>
+        <span data-i18n="tabs.calculator">Калькулятор</span>
+    </button>
+    <button class="tab-btn" data-tab="support">
+        <svg viewBox="0 0 24 24" stroke="currentColor"><circle cx="12" cy="12" r="2.5"/><circle cx="19" cy="12" r="2.5"/><circle cx="5" cy="12" r="2.5"/></svg>
+        <span data-i18n="tabs.more">Прочее</span>
+    </button>
 </div>
 
-<div id="modalsContainer">
-    <!-- Сюда будут загружаться модальные окна -->
-</div>
+<script>
+    // ==================== ПЕРЕВОДЫ ====================
+    const translations = {
+        ru: {
+            tabs: { home: "Главная", create: "Создать", calculator: "Калькулятор", more: "Прочее" },
+            home: { realProfit: "Реальная прибыль (RUB)", recentOperations: "Последние операции", buys: "Покупок", sells: "Продаж", showAllHistory: "Показать всю историю сделок", deleteAll: "Удалить все сделки", noDeals: "Нет сделок", deleteAllConfirm: "Удалить ВСЕ сделки?", deleteAllSuccess: "Все сделки удалены" },
+            create: { title: "Новая сделка", type: "Тип операции", buy: "Покупка USDT", sell: "Продажа USDT", date: "Дата (ДД.ММ.ГГ)", amountRub: "Сумма (RUB)", amountUsdt: "Количество USDT", price: "Цена за 1 USDT", paymentMethod: "Метод оплаты", dealNumber: "Номер сделки", checkLink: "Ссылка на чек", submit: "Записать сделку", success: "Сделка добавлена", fillFields: "Заполните поля", invalidDate: "Неверный формат даты" },
+            calculator: { title: "Количество USDT", rubAmount: "Сумма в RUB", usdtRate: "Курс USDT (₽)", calculate: "Рассчитать", result: "Вы получите", resultPlaceholder: "Результат", secondTitle: "Курс покупки", secondRub: "Сумма RUB", secondUsdt: "Получено USDT", secondCalculate: "Узнать цену", secondResult: "Цена за 1 USDT", fillBoth: "Заполните оба поля" },
+            more: { support: "Техподдержка", supportDesc: "Напишите нам, если нашли баг или есть идеи", supportBtn: "Открыть чат", import: "Импорт из Telegram Wallet", importAdd: "Добавить", settings: "Настройки", language: "Язык", theme: "Тема", themeLight: "Светлая", themeDark: "Тёмная", syncStatus: "Синхронизация", syncBtn: "Проверить синхронизацию", noFile: "Выберите файл", importSuccess: "Импортировано {{count}} сделок" },
+            deal: { buy: "Покупка USDT", sell: "Продажа USDT", price: "Цена", margin: "Маржа", paymentMethod: "Оплата", dealNumber: "Номер", checkLink: "Ссылка", edit: "Редактировать", delete: "Удалить", deleteConfirm: "Удалить сделку", insufficient: "Недостаточно USDT", noPurchases: "нет покупок" },
+            modal: { history: "Вся история", search: "Поиск", all: "Все", buys: "Покупки", sells: "Продажи", editTitle: "Редактирование сделки", save: "Сохранить", cancel: "Отмена", noDealsFound: "Сделок не найдено" },
+            currencies: { usd: "USD", eur: "EUR", cny: "CNY" }
+        },
+        en: {
+            tabs: { home: "Home", create: "Create", calculator: "Calculator", more: "More" },
+            home: { realProfit: "Real profit (RUB)", recentOperations: "Recent operations", buys: "Buys", sells: "Sells", showAllHistory: "Show all history", deleteAll: "Delete all deals", noDeals: "No deals", deleteAllConfirm: "Delete ALL deals?", deleteAllSuccess: "All deals deleted" },
+            create: { title: "New deal", type: "Type", buy: "Buy USDT", sell: "Sell USDT", date: "Date (DD.MM.YY)", amountRub: "Amount (RUB)", amountUsdt: "USDT amount", price: "Price per 1 USDT", paymentMethod: "Payment method", dealNumber: "Deal number", checkLink: "Receipt link", submit: "Save deal", success: "Deal added", fillFields: "Fill fields", invalidDate: "Invalid date" },
+            calculator: { title: "USDT amount", rubAmount: "Amount RUB", usdtRate: "USDT rate (RUB)", calculate: "Calculate", result: "You get", resultPlaceholder: "Result", secondTitle: "Purchase price", secondRub: "Amount RUB", secondUsdt: "USDT received", secondCalculate: "Calculate price", secondResult: "Price per 1 USDT", fillBoth: "Fill both fields" },
+            more: { support: "Support", supportDesc: "Write us about bugs or ideas", supportBtn: "Open chat", import: "Import from Telegram Wallet", importAdd: "Add", settings: "Settings", language: "Language", theme: "Theme", themeLight: "Light", themeDark: "Dark", syncStatus: "Sync", syncBtn: "Check sync", noFile: "Select file", importSuccess: "Imported {{count}} deals" },
+            deal: { buy: "Buy USDT", sell: "Sell USDT", price: "Price", margin: "Margin", paymentMethod: "Payment", dealNumber: "Number", checkLink: "Link", edit: "Edit", delete: "Delete", deleteConfirm: "Delete deal", insufficient: "Insufficient USDT", noPurchases: "no purchases" },
+            modal: { history: "Full history", search: "Search", all: "All", buys: "Buys", sells: "Sells", editTitle: "Edit deal", save: "Save", cancel: "Cancel", noDealsFound: "No deals found" },
+            currencies: { usd: "USD", eur: "EUR", cny: "CNY" }
+        },
+        be: {
+            tabs: { home: "Галоўная", create: "Стварыць", calculator: "Калькулятар", more: "Іншае" },
+            home: { realProfit: "Рэальны прыбытак (RUB)", recentOperations: "Апошнія аперацыі", buys: "Куплі", sells: "Продажы", showAllHistory: "Паказаць гісторыю", deleteAll: "Выдаліць усе", noDeals: "Няма здзелак", deleteAllConfirm: "Выдаліць УСЕ здзелкі?", deleteAllSuccess: "Усе здзелкі выдалены" },
+            create: { title: "Новая здзелка", type: "Тып", buy: "Купля USDT", sell: "Продаж USDT", date: "Дата (ДД.ММ.ГГ)", amountRub: "Сума (RUB)", amountUsdt: "Колькасць USDT", price: "Цана за 1 USDT", paymentMethod: "Спосаб аплаты", dealNumber: "Нумар здзелкі", checkLink: "Спасылка на чэк", submit: "Запісаць", success: "Здзелка дададзена", fillFields: "Запоўніце палі", invalidDate: "Няправільны фармат" },
+            calculator: { title: "Колькасць USDT", rubAmount: "Сума ў RUB", usdtRate: "Курс USDT (₽)", calculate: "Разлічыць", result: "Вы атрымаеце", resultPlaceholder: "Вынік", secondTitle: "Курс пакупкі", secondRub: "Сума RUB", secondUsdt: "Атрымана USDT", secondCalculate: "Даведацца", secondResult: "Цана за 1 USDT", fillBoth: "Запоўніце абодва палі" },
+            more: { support: "Падтрымка", supportDesc: "Напішыце нам, калі знайшлі памылку", supportBtn: "Адкрыць чат", import: "Імпарт з Telegram Wallet", importAdd: "Дадаць", settings: "Налады", language: "Мова", theme: "Тэма", themeLight: "Светлая", themeDark: "Цёмная", syncStatus: "Сінхранізацыя", syncBtn: "Праверыць", noFile: "Абярыце файл", importSuccess: "Імпартавана {{count}} здзелак" },
+            deal: { buy: "Купля USDT", sell: "Продаж USDT", price: "Цана", margin: "Маржа", paymentMethod: "Аплата", dealNumber: "Нумар", checkLink: "Спасылка", edit: "Рэдагаваць", delete: "Выдаліць", deleteConfirm: "Выдаліць здзелку", insufficient: "Недастаткова USDT", noPurchases: "няма купляў" },
+            modal: { history: "Уся гісторыя", search: "Пошук", all: "Усе", buys: "Куплі", sells: "Продажы", editTitle: "Рэдагаванне", save: "Захаваць", cancel: "Адмена", noDealsFound: "Здзелак не знойдзена" },
+            currencies: { usd: "USD", eur: "EUR", cny: "CNY" }
+        },
+        uk: {
+            tabs: { home: "Головна", create: "Створити", calculator: "Калькулятор", more: "Інше" },
+            home: { realProfit: "Реальний прибуток (RUB)", recentOperations: "Останні операції", buys: "Купівлі", sells: "Продажі", showAllHistory: "Показати історію", deleteAll: "Видалити всі", noDeals: "Немає угод", deleteAllConfirm: "Видалити ВСІ угоди?", deleteAllSuccess: "Всі угоди видалені" },
+            create: { title: "Нова угода", type: "Тип", buy: "Купівля USDT", sell: "Продаж USDT", date: "Дата (ДД.ММ.РР)", amountRub: "Сума (RUB)", amountUsdt: "Кількість USDT", price: "Ціна за 1 USDT", paymentMethod: "Спосіб оплати", dealNumber: "Номер угоди", checkLink: "Посилання на чек", submit: "Записати", success: "Угоду додано", fillFields: "Заповніть поля", invalidDate: "Невірний формат" },
+            calculator: { title: "Кількість USDT", rubAmount: "Сума в RUB", usdtRate: "Курс USDT (₽)", calculate: "Розрахувати", result: "Ви отримаєте", resultPlaceholder: "Результат", secondTitle: "Курс покупки", secondRub: "Сума RUB", secondUsdt: "Отримано USDT", secondCalculate: "Дізнатись", secondResult: "Ціна за 1 USDT", fillBoth: "Заповніть обидва поля" },
+            more: { support: "Підтримка", supportDesc: "Напишіть нам, якщо знайшли помилку", supportBtn: "Відкрити чат", import: "Імпорт з Telegram Wallet", importAdd: "Додати", settings: "Налаштування", language: "Мова", theme: "Тема", themeLight: "Світла", themeDark: "Темна", syncStatus: "Синхронізація", syncBtn: "Перевірити", noFile: "Виберіть файл", importSuccess: "Імпортовано {{count}} угод" },
+            deal: { buy: "Купівля USDT", sell: "Продаж USDT", price: "Ціна", margin: "Маржа", paymentMethod: "Оплата", dealNumber: "Номер", checkLink: "Посилання", edit: "Редагувати", delete: "Видалити", deleteConfirm: "Видалити угоду", insufficient: "Недостатньо USDT", noPurchases: "немає покупок" },
+            modal: { history: "Вся історія", search: "Пошук", all: "Всі", buys: "Купівлі", sells: "Продажі", editTitle: "Редагування", save: "Зберегти", cancel: "Скасувати", noDealsFound: "Угод не знайдено" },
+            currencies: { usd: "USD", eur: "EUR", cny: "CNY" }
+        },
+        sr: {
+            tabs: { home: "Почетна", create: "Направи", calculator: "Калкулатор", more: "Више" },
+            home: { realProfit: "Стварна добит (RUB)", recentOperations: "Последње операције", buys: "Куповине", sells: "Продаје", showAllHistory: "Прикажи историју", deleteAll: "Обриши све", noDeals: "Нема трансакција", deleteAllConfirm: "Обрисати СВЕ трансакције?", deleteAllSuccess: "Све трансакције обрисане" },
+            create: { title: "Нова трансакција", type: "Тип", buy: "Куповина USDT", sell: "Продаја USDT", date: "Датум (ДД.ММ.ГГ)", amountRub: "Износ (RUB)", amountUsdt: "Количина USDT", price: "Цена за 1 USDT", paymentMethod: "Метод плаћања", dealNumber: "Број трансакције", checkLink: "Линк до рачуна", submit: "Сачувај", success: "Трансакција додата", fillFields: "Попуните поља", invalidDate: "Неисправан датум" },
+            calculator: { title: "Количина USDT", rubAmount: "Износ у RUB", usdtRate: "Курс USDT (RUB)", calculate: "Израчунај", result: "Добићете", resultPlaceholder: "Резултат", secondTitle: "Цена куповине", secondRub: "Износ RUB", secondUsdt: "Добијено USDT", secondCalculate: "Израчунај", secondResult: "Цена за 1 USDT", fillBoth: "Попуните оба поља" },
+            more: { support: "Подршка", supportDesc: "Пишите нам ако нађете грешку", supportBtn: "Отвори ћаскање", import: "Увоз из Telegram Wallet", importAdd: "Додај", settings: "Подешавања", language: "Језик", theme: "Тема", themeLight: "Светла", themeDark: "Тамна", syncStatus: "Синхронизација", syncBtn: "Провери", noFile: "Изаберите фајл", importSuccess: "Увезено {{count}} трансакција" },
+            deal: { buy: "Куповина USDT", sell: "Продаја USDT", price: "Цена", margin: "Маржа", paymentMethod: "Плаћање", dealNumber: "Број", checkLink: "Линк", edit: "Уреди", delete: "Обриши", deleteConfirm: "Обрисати трансакцију", insufficient: "Недовољно USDT", noPurchases: "нема куповина" },
+            modal: { history: "Историја", search: "Претрага", all: "Све", buys: "Куповине", sells: "Продаје", editTitle: "Уреди трансакцију", save: "Сачувај", cancel: "Откажи", noDealsFound: "Нема трансакција" },
+            currencies: { usd: "USD", eur: "EUR", cny: "CNY" }
+        },
+        de: {
+            tabs: { home: "Startseite", create: "Erstellen", calculator: "Rechner", more: "Mehr" },
+            home: { realProfit: "Tatsächlicher Gewinn (RUB)", recentOperations: "Letzte Operationen", buys: "Käufe", sells: "Verkäufe", showAllHistory: "Gesamte Historie anzeigen", deleteAll: "Alle Transaktionen löschen", noDeals: "Keine Transaktionen", deleteAllConfirm: "ALLE Transaktionen löschen?", deleteAllSuccess: "Alle Transaktionen gelöscht" },
+            create: { title: "Neue Transaktion", type: "Typ", buy: "USDT kaufen", sell: "USDT verkaufen", date: "Datum (TT.MM.JJ)", amountRub: "Betrag (RUB)", amountUsdt: "USDT Menge", price: "Preis pro 1 USDT", paymentMethod: "Zahlungsmethode", dealNumber: "Transaktionsnummer", checkLink: "Link zur Quittung", submit: "Transaktion speichern", success: "Transaktion hinzugefügt", fillFields: "Felder ausfüllen", invalidDate: "Ungültiges Datumsformat" },
+            calculator: { title: "USDT Menge", rubAmount: "Betrag in RUB", usdtRate: "USDT Kurs (RUB)", calculate: "Berechnen", result: "Sie erhalten", resultPlaceholder: "Ergebnis", secondTitle: "Kaufpreis", secondRub: "Betrag RUB", secondUsdt: "USDT erhalten", secondCalculate: "Preis berechnen", secondResult: "Preis pro 1 USDT", fillBoth: "Beide Felder ausfüllen" },
+            more: { support: "Support", supportDesc: "Schreiben Sie uns bei Fehlern oder Ideen", supportBtn: "Chat öffnen", import: "Import aus Telegram Wallet", importAdd: "Hinzufügen", settings: "Einstellungen", language: "Sprache", theme: "Design", themeLight: "Hell", themeDark: "Dunkel", syncStatus: "Synchronisierung", syncBtn: "Synchronisierung prüfen", noFile: "Datei auswählen", importSuccess: "{{count}} Transaktionen importiert" },
+            deal: { buy: "USDT kaufen", sell: "USDT verkaufen", price: "Preis", margin: "Marge", paymentMethod: "Zahlung", dealNumber: "Nummer", checkLink: "Link", edit: "Bearbeiten", delete: "Löschen", deleteConfirm: "Transaktion löschen?", insufficient: "Nicht genug USDT", noPurchases: "keine Käufe" },
+            modal: { history: "Gesamte Historie", search: "Suchen", all: "Alle", buys: "Käufe", sells: "Verkäufe", editTitle: "Transaktion bearbeiten", save: "Speichern", cancel: "Abbrechen", noDealsFound: "Keine Transaktionen gefunden" },
+            currencies: { usd: "USD", eur: "EUR", cny: "CNY" }
+        }
+    };
 
-<script src="js/data.js"></script>
-<script src="js/language.js"></script>
-<script src="js/ui.js"></script>
-<script src="js/import.js"></script>
-<script src="js/app.js"></script>
+    let currentLocale = 'ru';
+    let deals = [];
+    let historyFilter = 'all';
+    let historySearchQuery = '';
+    let currentUsdRate = 0, currentEurRate = 0, currentCnyRate = 0;
+
+    function t(key, params = {}) {
+        const keys = key.split('.');
+        let value = translations[currentLocale];
+        for (const k of keys) {
+            if (value?.[k] === undefined) return key;
+            value = value[k];
+        }
+        if (typeof value === 'string' && params) {
+            return value.replace(/\{\{(\w+)\}\}/g, (_, pk) => params[pk] !== undefined ? params[pk] : _);
+        }
+        return value;
+    }
+
+    function updateAllTexts() {
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            const translation = t(key);
+            if (translation !== key) {
+                if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                    if (!el.getAttribute('data-i18n-placeholder')) el.value = translation;
+                } else {
+                    el.textContent = translation;
+                }
+            }
+        });
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+            const key = el.getAttribute('data-i18n-placeholder');
+            const translation = t(key);
+            if (translation !== key) el.placeholder = translation;
+        });
+        updateLanguageButtons();
+        renderAll();
+        updateSyncUI();
+    }
+
+    function updateLanguageButtons() {
+        const container = document.getElementById('languageButtons');
+        if (!container) return;
+        const languages = [
+            { code: 'be', flag: '🇧🇾' },
+            { code: 'de', flag: '🇩🇪' },
+            { code: 'en', flag: '🇬🇧' },
+            { code: 'ru', flag: '🇷🇺' },
+            { code: 'sr', flag: '🇷🇸' },
+            { code: 'uk', flag: '🇺🇦' }
+        ];
+        container.innerHTML = '';
+        languages.forEach(lang => {
+            const btn = document.createElement('div');
+            btn.className = 'lang-option' + (currentLocale === lang.code ? ' active' : '');
+            btn.textContent = lang.flag;
+            btn.onclick = () => setLocale(lang.code);
+            container.appendChild(btn);
+        });
+    }
+
+    function setLocale(locale) {
+        if (translations[locale]) {
+            currentLocale = locale;
+            localStorage.setItem('app_locale', locale);
+            updateAllTexts();
+            updateLanguageButtons();
+        }
+    }
+
+    function setTheme(theme) {
+        if (theme === 'dark') {
+            document.body.classList.add('dark');
+        } else {
+            document.body.classList.remove('dark');
+        }
+        localStorage.setItem('theme', theme);
+        document.querySelectorAll('.theme-option').forEach(opt => {
+            if (opt.dataset.theme === theme) opt.classList.add('active');
+            else opt.classList.remove('active');
+        });
+    }
+
+    // Онбординг
+    const onbSteps = [
+        { icon: '📊', title: 'Добро пожаловать', desc: 'P2P Tracker Pro — ваш помощник для учёта сделок.' },
+        { icon: '🏠', title: 'Главный экран', desc: 'Прибыль, курсы валют, последние операции.' },
+        { icon: '➕', title: 'Создание сделки', desc: 'Добавляйте покупки и продажи USDT.' },
+        { icon: '💰', title: 'Расчёт маржи', desc: 'Автоматический расчёт прибыли.' },
+        { icon: '📋', title: 'История', desc: 'Все сделки с поиском и фильтрами.' },
+        { icon: '📎', title: 'Импорт', desc: 'Импорт из Telegram Wallet.' }
+    ];
+    let onbStep = 0;
+    function updateOnboarding() {
+        const s = onbSteps[onbStep];
+        document.getElementById('onbIcon').textContent = s.icon;
+        document.getElementById('onbTitle').textContent = s.title;
+        document.getElementById('onbDesc').textContent = s.desc;
+        const progress = document.getElementById('onbProgress');
+        progress.innerHTML = '';
+        onbSteps.forEach((_, i) => {
+            const dot = document.createElement('div');
+            dot.className = 'progress-dot' + (i === onbStep ? ' active' : '');
+            progress.appendChild(dot);
+        });
+        const nextBtn = document.getElementById('onbNextBtn');
+        nextBtn.textContent = onbStep === onbSteps.length - 1 ? 'Начать работу' : 'Далее';
+    }
+    function showPremiumGuide() { onbStep = 0; updateOnboarding(); document.getElementById('onboardingOverlay').classList.remove('hide'); }
+    document.getElementById('onbNextBtn').onclick = () => {
+        if (onbStep < onbSteps.length - 1) { onbStep++; updateOnboarding(); }
+        else { document.getElementById('onboardingOverlay').classList.add('hide'); localStorage.setItem('onboarding_done', 'true'); }
+    };
+    document.getElementById('onbSkipBtn').onclick = () => { document.getElementById('onboardingOverlay').classList.add('hide'); localStorage.setItem('onboarding_done', 'true'); };
+    if (!localStorage.getItem('onboarding_done')) setTimeout(() => showPremiumGuide(), 300);
+
+    // Данные
+    function getStorageKey() { return `p2p_deals_${localStorage.getItem('p2p_guest_id') || 'guest'}`; }
+    function loadData() { const stored = localStorage.getItem(getStorageKey()); deals = stored ? JSON.parse(stored) : []; sortDealsByDate(); renderAll(); updateStats(); }
+    function saveData() { sortDealsByDate(); localStorage.setItem(getStorageKey(), JSON.stringify(deals)); }
+    function sortDealsByDate() { deals.sort((a, b) => (b.date || 0) - (a.date || 0)); }
+    function addDeal(deal) { deal.id = Date.now() + Math.random(); deal.date = Date.now(); deals.unshift(deal); saveData(); renderAll(); updateStats(); saveDataToCloud(); }
+    function deleteDeal(id) { deals = deals.filter(d => d.id != id); saveData(); renderAll(); updateStats(); saveDataToCloud(); }
+    function updateStats() { 
+        document.getElementById('totalBuysCount').innerText = deals.filter(d => d.type === 'buy').length; 
+        document.getElementById('totalSellsCount').innerText = deals.filter(d => d.type === 'sell').length;
+        const syncDealsEl = document.getElementById('syncDealsCount');
+        if (syncDealsEl) syncDealsEl.innerHTML = `<span class="sync-badge info">${deals.length}</span>`;
+    }
+
+    function calculateRealProfit() {
+        const buys = deals.filter(d => d.type === 'buy').sort((a,b) => a.date - b.date);
+        const sells = deals.filter(d => d.type === 'sell').sort((a,b) => a.date - b.date);
+        let profit = 0, buyIdx = 0, buyRemaining = buys[0]?.usdtAmount || 0;
+        let buyPrice = buys[0]?.pricePerUsdt || (buys[0]?.amountPaid / buys[0]?.usdtAmount) || 0;
+        for(const sell of sells) {
+            let sellAmount = sell.usdtAmount;
+            const sellPrice = sell.pricePerUsdt || sell.amountPaid / sell.usdtAmount;
+            while(sellAmount > 0.001 && buyIdx < buys.length) {
+                if(buyRemaining <= 0.001) { buyIdx++; if(buyIdx >= buys.length) break; buyRemaining = buys[buyIdx].usdtAmount; buyPrice = buys[buyIdx].pricePerUsdt || buys[buyIdx].amountPaid / buys[buyIdx].usdtAmount; }
+                const used = Math.min(sellAmount, buyRemaining);
+                profit += (sellPrice - buyPrice) * used;
+                sellAmount -= used; buyRemaining -= used;
+            }
+        }
+        return profit;
+    }
+
+    function calcAnalytics() {
+        const profit = calculateRealProfit();
+        const profitEl = document.getElementById('totalProfitRub');
+        profitEl.innerHTML = profit.toFixed(2) + ' ₽';
+        profitEl.style.color = profit >= 0 ? '#10b981' : '#ef4444';
+    }
+
+    function calculateSimpleMargin(deal) {
+        if (deal.type !== 'sell') return null;
+        const buys = deals.filter(d => d.type === 'buy').sort((a,b) => a.date - b.date);
+        if (buys.length === 0) return null;
+        let remaining = deal.usdtAmount, totalCost = 0;
+        for(const buy of buys) { if(remaining <= 0) break; const used = Math.min(remaining, buy.usdtAmount); totalCost += (buy.pricePerUsdt || buy.amountPaid/buy.usdtAmount) * used; remaining -= used; }
+        if(remaining > 0.001) return null;
+        const avgBuy = totalCost / deal.usdtAmount, sellPrice = deal.pricePerUsdt || deal.amountPaid/deal.usdtAmount;
+        return (sellPrice - avgBuy) * deal.usdtAmount;
+    }
+
+    function formatDate(ts) { return new Date(ts).toLocaleDateString('ru-RU', { day:'numeric', month:'short' }); }
+    function isValidDate(str) { return /^(\d{2})\.(\d{2})\.(\d{2})$/.test(str); }
+
+    function renderDealCard(deal) {
+        const price = deal.pricePerUsdt ? deal.pricePerUsdt.toFixed(2) : (deal.amountPaid/deal.usdtAmount).toFixed(2);
+        const isBuy = deal.type === 'buy';
+        const margin = !isBuy ? calculateSimpleMargin(deal) : null;
+        const marginFormatted = margin !== null ? (margin >= 0 ? `+${margin.toFixed(2)} ₽` : `${margin.toFixed(2)} ₽`) : null;
+        let extraHtml = `<div class="info-row"><span class="info-label">${t('deal.price')}:</span><span class="info-value">${price} ₽</span></div>`;
+        if (!isBuy && margin !== null) extraHtml += `<div class="info-row"><span class="info-label">${t('deal.margin')}:</span><span class="info-value ${margin>=0?'positive':'negative'}">${marginFormatted}</span></div>`;
+        else if (!isBuy && margin === null && deals.filter(d=>d.type==='buy').length>0) extraHtml += `<div class="info-row"><span class="info-label">${t('deal.margin')}:</span><span class="info-value">${t('deal.insufficient')}</span></div>`;
+        else if (!isBuy && margin === null) extraHtml += `<div class="info-row"><span class="info-label">${t('deal.margin')}:</span><span class="info-value">${t('deal.noPurchases')}</span></div>`;
+        if (deal.counterparty?.trim()) extraHtml += `<div class="info-row"><span class="info-label">${t('deal.paymentMethod')}:</span><span class="info-value">${deal.counterparty}</span></div>`;
+        if (deal.dealNumber?.trim()) extraHtml += `<div class="info-row"><span class="info-label">${t('deal.dealNumber')}:</span><span class="info-value">${deal.dealNumber}</span></div>`;
+        if (deal.comment?.trim()) extraHtml += `<div class="info-row"><span class="info-label">${t('deal.checkLink')}:</span><a href="${deal.comment}" target="_blank">${deal.comment.length>40?deal.comment.substring(0,37)+'...':deal.comment}</a></div>`;
+        return `<div class="transaction-card"><div class="transaction-header"><div class="transaction-type"><div class="type-icon ${isBuy?'buy':'sell'}">${isBuy?'🔴':'🟢'}</div><div class="type-name">${isBuy?t('deal.buy'):t('deal.sell')}</div></div><div class="transaction-date">${deal.customDate||formatDate(deal.date)}</div></div><div class="transaction-body"><div class="amount-row"><span class="rub-amount">${deal.amountPaid.toLocaleString()} ₽</span><span class="usdt-amount">${deal.usdtAmount.toFixed(2)} USDT</span></div>${extraHtml}</div><div class="transaction-footer"><button class="action-btn edit" data-id="${deal.id}">${t('deal.edit')}</button><button class="action-btn delete" data-id="${deal.id}">${t('deal.delete')}</button></div></div>`;
+    }
+
+    function renderRecent() {
+        const container = document.getElementById('recentDealsList');
+        if(deals.length === 0) { container.innerHTML = `<div class="empty-state">${t('home.noDeals')}</div>`; return; }
+        container.innerHTML = deals.slice(0,3).map(d => renderDealCard(d)).join('');
+        attachEvents();
+    }
+    function renderAll() { calcAnalytics(); renderRecent(); }
+    function attachEvents() {
+        document.querySelectorAll('#recentDealsList .action-btn.delete').forEach(btn => btn.onclick = () => { if(confirm(t('deal.deleteConfirm'))) deleteDeal(btn.dataset.id); });
+        document.querySelectorAll('#recentDealsList .action-btn.edit').forEach(btn => btn.onclick = () => openEditModal(btn.dataset.id));
+    }
+
+    function getFilteredHistory() {
+        return deals.filter(deal => {
+            if(historyFilter !== 'all' && deal.type !== historyFilter) return false;
+            if(historySearchQuery) {
+                const q = historySearchQuery.toLowerCase();
+                const contra = (deal.counterparty || '').toLowerCase();
+                const comment = (deal.comment || '').toLowerCase();
+                if(!contra.includes(q) && !comment.includes(q)) return false;
+            }
+            return true;
+        });
+    }
+    function renderHistory() {
+        const filtered = getFilteredHistory();
+        const container = document.getElementById('historyDealsList');
+        if(filtered.length === 0) { container.innerHTML = `<div class="empty-state">${t('modal.noDealsFound')}</div>`; return; }
+        container.innerHTML = filtered.map(d => renderDealCard(d)).join('');
+        document.querySelectorAll('#historyDealsList .action-btn.delete').forEach(btn => btn.onclick = () => { if(confirm(t('deal.deleteConfirm'))) deleteDeal(btn.dataset.id); });
+        document.querySelectorAll('#historyDealsList .action-btn.edit').forEach(btn => btn.onclick = () => openEditModal(btn.dataset.id));
+    }
+
+    function openEditModal(id) {
+        const deal = deals.find(d => d.id == id);
+        if(!deal) return;
+        const modalHtml = `<div class="modal" id="editModal"><div class="modal-content"><h3>${t('modal.editTitle')}</h3><div class="input-group"><label>${t('create.type')}</label><div class="select-wrapper"><select id="editType"><option value="buy" ${deal.type==='buy'?'selected':''}>${t('create.buy')}</option><option value="sell" ${deal.type==='sell'?'selected':''}>${t('create.sell')}</option></select></div></div><div class="input-group"><label>${t('create.date')}</label><input type="text" id="editDate" value="${deal.customDate||''}" maxlength="10"></div><div class="input-group"><label>${t('create.amountRub')}</label><input type="number" id="editAmount" value="${deal.amountPaid}" step="0.01"></div><div class="input-group"><label>${t('create.amountUsdt')}</label><input type="number" id="editUsdt" value="${deal.usdtAmount}" step="0.01"></div><div class="input-group"><label>${t('create.price')}</label><input type="number" id="editPrice" value="${deal.pricePerUsdt||(deal.amountPaid/deal.usdtAmount).toFixed(2)}" step="0.01"></div><div class="input-group"><label>${t('create.paymentMethod')}</label><input type="text" id="editCounterparty" value="${deal.counterparty||''}"></div><div class="input-group"><label>${t('create.dealNumber')}</label><input type="text" id="editDealNumber" value="${deal.dealNumber||''}"></div><div class="input-group"><label>${t('create.checkLink')}</label><textarea id="editComment" rows="2">${deal.comment||''}</textarea></div><button id="saveEditBtn" class="btn" style="margin-bottom:12px;">${t('modal.save')}</button><button id="cancelEditBtn" class="center-btn">${t('modal.cancel')}</button></div></div>`;
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+        document.getElementById('saveEditBtn').onclick = () => {
+            const newAmount = parseFloat(document.getElementById('editAmount').value), newUsdt = parseFloat(document.getElementById('editUsdt').value);
+            if(isNaN(newAmount) || isNaN(newUsdt)) { alert(t('create.fillFields')); return; }
+            let newPrice = document.getElementById('editPrice').value;
+            if(newPrice && !isNaN(parseFloat(newPrice))) newPrice = parseFloat(newPrice);
+            else newPrice = newAmount / newUsdt;
+            const newDeal = { type: document.getElementById('editType').value, amountPaid: newAmount, usdtAmount: newUsdt, pricePerUsdt: parseFloat(newPrice.toFixed(2)), counterparty: document.getElementById('editCounterparty').value, dealNumber: document.getElementById('editDealNumber').value, comment: document.getElementById('editComment').value, customDate: document.getElementById('editDate').value };
+            const idx = deals.findIndex(d => d.id == id);
+            if(idx !== -1) { deals[idx] = {...deals[idx], ...newDeal, id: deals[idx].id}; saveData(); renderAll(); updateStats(); saveDataToCloud(); }
+            document.getElementById('editModal').remove();
+        };
+        document.getElementById('cancelEditBtn').onclick = () => document.getElementById('editModal').remove();
+        document.getElementById('editModal').onclick = (e) => { if(e.target === e.currentTarget) e.currentTarget.remove(); };
+    }
+
+    function importFromTelegramWallet(replaceMode) {
+        const fileInput = document.getElementById('telegramImportFile');
+        if (!fileInput.files || !fileInput.files.length) { alert(t('more.noFile')); return; }
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, { type: 'array' });
+            const rows = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { header: 1, defval: "" });
+            if (!rows || rows.length < 2) { alert(t('more.noFile')); return; }
+            const headers = rows[0].map(c => String(c || '').toLowerCase().trim());
+            const colIndex = {
+                adType: headers.findIndex(h => h.includes('ad type')), role: headers.findIndex(h => h.includes('role')),
+                orderNumber: headers.findIndex(h => h.includes('order number')), netCrypto: headers.findIndex(h => h.includes('net crypto')),
+                fiatAmount: headers.findIndex(h => h.includes('fiat amount')), paymentMethod: headers.findIndex(h => h.includes('payment method')),
+                completionTime: headers.findIndex(h => h.includes('completion time'))
+            };
+            const newDeals = [];
+            for (let i = 1; i < rows.length; i++) {
+                const row = rows[i];
+                if (!row) continue;
+                let adType = colIndex.adType >= 0 ? String(row[colIndex.adType] || '').toUpperCase() : '';
+                let role = colIndex.role >= 0 ? String(row[colIndex.role] || '').toUpperCase() : '';
+                let type = null;
+                if ((adType === 'SALE' && role === 'SELLER') || (adType === 'SELL' && role === 'SELLER')) type = 'sell';
+                else if ((adType === 'PURCHASE' && role === 'BUYER') || (adType === 'BUY' && role === 'BUYER')) type = 'buy';
+                else if (adType === 'SALE' && role === 'BUYER') type = 'buy';
+                else if (adType === 'PURCHASE' && role === 'SELLER') type = 'sell';
+                if (!type) continue;
+                let usdt = colIndex.netCrypto >= 0 ? parseFloat(row[colIndex.netCrypto]) : 0;
+                let amount = colIndex.fiatAmount >= 0 ? parseFloat(row[colIndex.fiatAmount]) : 0;
+                if (isNaN(usdt) || isNaN(amount) || usdt <= 0 || amount <= 0) continue;
+                let method = colIndex.paymentMethod >= 0 ? String(row[colIndex.paymentMethod] || '').replace(/ \(ex\..*?\)/g, '').trim() : '';
+                let orderNum = colIndex.orderNumber >= 0 ? String(row[colIndex.orderNumber] || '') : '';
+                let date = '';
+                if (colIndex.completionTime >= 0 && row[colIndex.completionTime]) {
+                    const match = String(row[colIndex.completionTime]).match(/^(\d{4})-(\d{2})-(\d{2})/);
+                    if (match) date = `${match[3]}.${match[2]}.${match[1].slice(-2)}`;
+                }
+                newDeals.push({ type, amountPaid: amount, usdtAmount: usdt, pricePerUsdt: parseFloat((amount/usdt).toFixed(2)), counterparty: method, dealNumber: orderNum, comment: '', customDate: date });
+            }
+            if (newDeals.length === 0) { alert(t('more.noFile')); return; }
+            for (const deal of newDeals) addDeal(deal);
+            alert(t('more.importSuccess', { count: newDeals.length }));
+            fileInput.value = '';
+        };
+        reader.readAsArrayBuffer(file);
+    }
+
+    // Синхронизация
+    function updateSyncUI() {
+        const isInTelegram = !!(window.Telegram?.WebApp);
+        const cloudAvailable = !!(window.Telegram?.WebApp?.CloudStorage);
+        
+        const telegramStatusEl = document.getElementById('syncTelegramStatus');
+        const cloudStatusEl = document.getElementById('syncCloudStatus');
+        const syncMessageEl = document.getElementById('syncMessage');
+        
+        if (telegramStatusEl) {
+            if (isInTelegram) telegramStatusEl.innerHTML = '<span class="sync-badge success">Доступен</span>';
+            else telegramStatusEl.innerHTML = '<span class="sync-badge warning">Недоступен</span>';
+        }
+        
+        if (cloudStatusEl) {
+            if (cloudAvailable) cloudStatusEl.innerHTML = '<span class="sync-badge success">Доступно</span>';
+            else cloudStatusEl.innerHTML = '<span class="sync-badge error">Недоступно</span>';
+        }
+        
+        if (syncMessageEl) {
+            if (isInTelegram && cloudAvailable) {
+                syncMessageEl.innerHTML = 'Данные синхронизируются с облаком Telegram';
+                syncMessageEl.style.color = '#10b981';
+            } else if (isInTelegram && !cloudAvailable) {
+                syncMessageEl.innerHTML = 'Cloud Storage недоступен. Данные сохраняются локально.';
+                syncMessageEl.style.color = '#f59e0b';
+            } else {
+                syncMessageEl.innerHTML = 'Приложение запущено вне Telegram. Данные сохраняются локально.';
+                syncMessageEl.style.color = '#64748b';
+            }
+        }
+    }
+
+    function saveDataToCloud() {
+        updateSyncUI();
+        if (!window.Telegram?.WebApp || !Telegram.WebApp.CloudStorage) {
+            localStorage.setItem(getCloudKey(), JSON.stringify(deals));
+            return;
+        }
+        try {
+            Telegram.WebApp.CloudStorage.setItem(getCloudKey(), JSON.stringify(deals), (error) => {
+                if (error) localStorage.setItem(getCloudKey(), JSON.stringify(deals));
+                updateSyncUI();
+            });
+        } catch(e) {
+            localStorage.setItem(getCloudKey(), JSON.stringify(deals));
+        }
+    }
+
+    function loadDataFromCloud() {
+        updateSyncUI();
+        if (!window.Telegram?.WebApp || !Telegram.WebApp.CloudStorage) {
+            const stored = localStorage.getItem(getCloudKey());
+            deals = stored ? JSON.parse(stored) : [];
+            sortDealsByDate();
+            renderAll();
+            updateStats();
+            updateSyncUI();
+            return;
+        }
+        try {
+            Telegram.WebApp.CloudStorage.getItem(getCloudKey(), (error, result) => {
+                if (error) {
+                    const stored = localStorage.getItem(getCloudKey());
+                    deals = stored ? JSON.parse(stored) : [];
+                } else if (result && result !== '') {
+                    deals = JSON.parse(result);
+                } else {
+                    const stored = localStorage.getItem(getCloudKey());
+                    if (stored) deals = JSON.parse(stored);
+                    else deals = [];
+                }
+                sortDealsByDate();
+                renderAll();
+                updateStats();
+                updateSyncUI();
+            });
+        } catch(e) {
+            const stored = localStorage.getItem(getCloudKey());
+            deals = stored ? JSON.parse(stored) : [];
+            sortDealsByDate();
+            renderAll();
+            updateStats();
+            updateSyncUI();
+        }
+    }
+
+    function manualSync() {
+        saveDataToCloud();
+        setTimeout(() => loadDataFromCloud(), 500);
+    }
+
+    async function fetchExchangeRates() {
+        try {
+            const res = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+            const data = await res.json();
+            currentUsdRate = data.rates.RUB;
+            currentEurRate = data.rates.EUR;
+            currentCnyRate = data.rates.CNY;
+            document.getElementById('usdRate').innerHTML = currentUsdRate.toFixed(2) + ' ₽';
+            document.getElementById('eurRate').innerHTML = (currentUsdRate / currentEurRate).toFixed(2) + ' ₽';
+            document.getElementById('cnyRate').innerHTML = (currentUsdRate / currentCnyRate).toFixed(2) + ' ₽';
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('ru-RU', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+            ['usdUpdate','eurUpdate','cnyUpdate'].forEach(id => document.getElementById(id).innerHTML = timeStr);
+        } catch(e) { console.error(e); }
+    }
+
+    // Обработчики
+    document.getElementById('dealForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const amountPaid = parseFloat(document.getElementById('amountPaid').value);
+        const usdtAmount = parseFloat(document.getElementById('usdtAmount').value);
+        if(isNaN(amountPaid) || isNaN(usdtAmount)) { alert(t('create.fillFields')); return; }
+        let price = document.getElementById('pricePerUsdt').value;
+        if(price && !isNaN(parseFloat(price))) price = parseFloat(price);
+        else price = amountPaid / usdtAmount;
+        addDeal({ type: document.getElementById('dealType').value, amountPaid, usdtAmount, pricePerUsdt: parseFloat(price.toFixed(2)), counterparty: document.getElementById('counterparty').value, dealNumber: document.getElementById('dealNumber').value, comment: document.getElementById('comment').value, customDate: document.getElementById('dealDate').value });
+        document.getElementById('dealForm').reset();
+        alert(t('create.success'));
+    });
+    document.getElementById('calcBtn').onclick = () => { const r=parseFloat(document.getElementById('calcRub').value), rate=parseFloat(document.getElementById('calcRate').value); if(isNaN(r)||isNaN(rate)) { alert(t('calculator.fillBoth')); return; } document.getElementById('calcResultField').value = `${t('calculator.result')} ${(r/rate).toFixed(2)} USDT`; };
+    document.getElementById('quickCalcBtn').onclick = () => { const r=parseFloat(document.getElementById('quickRub').value), u=parseFloat(document.getElementById('quickUsdt').value); if(isNaN(r)||isNaN(u)||u===0) { alert(t('calculator.fillBoth')); return; } document.getElementById('quickResultField').value = `${t('calculator.secondResult')} ${(r/u).toFixed(2)} ₽`; };
+    document.getElementById('supportBtn').onclick = () => window.open('https://t.me/KyratovVD', '_blank');
+    document.getElementById('importAddBtn').onclick = () => importFromTelegramWallet(false);
+    document.getElementById('manualSyncBtn').onclick = () => manualSync();
+
+    const historyModal = document.getElementById('historyModal');
+    document.getElementById('showAllHistoryBtn').onclick = () => { renderHistory(); historyModal.style.display = 'flex'; };
+    document.getElementById('closeHistoryBtn').onclick = () => historyModal.style.display = 'none';
+    historyModal.onclick = (e) => { if(e.target === historyModal) historyModal.style.display = 'none'; };
+    document.getElementById('historySearchInput').oninput = (e) => { historySearchQuery = e.target.value; renderHistory(); };
+    document.querySelectorAll('[data-history-filter]').forEach(btn => btn.onclick = () => { document.querySelectorAll('[data-history-filter]').forEach(b => b.classList.remove('active')); btn.classList.add('active'); historyFilter = btn.dataset.historyFilter; renderHistory(); });
+    document.getElementById('clearAllDataBtn').onclick = () => { if(confirm(t('home.deleteAllConfirm'))) { deals = []; saveData(); renderAll(); updateStats(); alert(t('home.deleteAllSuccess')); saveDataToCloud(); } };
+
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.getElementById(`${tabId}Tab`).classList.add('active');
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelector(`.tab-btn[data-tab="${tabId}"]`).classList.add('active');
+    }
+    document.querySelectorAll('.tab-btn').forEach(b => b.onclick = () => switchTab(b.dataset.tab));
+
+    // Инициализация
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    setTheme(savedTheme);
+    document.querySelectorAll('.theme-option').forEach(opt => {
+        opt.onclick = () => setTheme(opt.dataset.theme);
+    });
+
+    const savedLocale = localStorage.getItem('app_locale') || 'ru';
+    if (translations[savedLocale]) currentLocale = savedLocale;
+    updateAllTexts();
+    updateLanguageButtons();
+
+    if(window.Telegram?.WebApp) { Telegram.WebApp.ready(); Telegram.WebApp.expand(); }
+    fetchExchangeRates();
+    loadDataFromCloud();
+    setInterval(fetchExchangeRates, 60000);
+</script>
 </body>
-</html> 
+</html>
