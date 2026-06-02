@@ -2,9 +2,9 @@ const { Telegraf, Markup, session } = require('telegraf');
 const express = require('express');
 
 // ========== КОНФИГУРАЦИЯ ==========
-const TOKEN = 'ВАШ_ТОКЕН_ОТ_BOTFATHER';  // Замените на ваш токен!
-const APP_URL = 'https://ВАШ-ДОМЕН.ru/p2p-tracker/';  // Замените на URL вашего приложения!
-const SUPPORT_LINK = 'https://t.me/ваш_чат_поддержки';  // Ссылка на чат поддержки
+const TOKEN = '8824407853:AAHq_BcojLt6FnzKdLgdd6LnuGySb6M2His';  // Замените на ваш токен!
+const APP_URL = 'https://kyratov.github.io/p2p_tracker/';  // Замените на URL вашего приложения!
+const SUPPORT_LINK = 'https://t.me/KyratovVD';  // Ссылка на чат поддержки
 const CHANNEL_LINK = 'https://t.me/ваш_канал';  // Ссылка на ваш канал (опционально)
 
 // ========== ИНИЦИАЛИЗАЦИЯ БОТА ==========
