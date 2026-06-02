@@ -1,14 +1,21 @@
 import os
+from dotenv import load_dotenv
 import logging
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, ContextTypes
 
-# ========== НАСТРОЙКИ ==========
-# Токен берите из переменных окружения на хостинге
-TOKEN = os.environ.get('BOT_TOKEN', '8824407853:AAHq_BcojLt6FnzKdLgdd6LnuGySb6M2His')
+# Загружаем переменные из файла .env (который вы создали)
+load_dotenv()
 
-# Ссылка на ваше WebApp приложение
-APP_URL = 'https://kyratov.github.io/p2p.tracker/'
+# ========== НАСТРОЙКИ ==========
+TOKEN = os.getenv('BOT_TOKEN')
+APP_URL = 'https://kyratov.github.io/p2p_tracker/'
+
+# Проверка токена
+if not TOKEN:
+    print("❌ ОШИБКА: BOT_TOKEN не найден в файле .env")
+    print("Убедитесь, что файл .env существует и содержит: BOT_TOKEN=ваш_токен")
+    exit(1)
 
 # Настройка логов
 logging.basicConfig(
@@ -19,7 +26,6 @@ logger = logging.getLogger(__name__)
 
 # ========== КЛАВИАТУРЫ ==========
 def get_main_keyboard():
-    """Главная клавиатура с кнопкой WebApp"""
     keyboard = [
         [InlineKeyboardButton(
             "🚀 ОТКРЫТЬ P2P TRACKER PRO",
@@ -34,7 +40,6 @@ def get_main_keyboard():
 
 # ========== КОМАНДЫ ==========
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Команда /start - главное меню"""
     user = update.effective_user
     user_name = user.first_name or "пользователь"
     
@@ -55,7 +60,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Команда /help - справка"""
     text = (
         "📖 <b>Справка по командам</b>\n\n"
         "🔹 /start — Главное меню\n"
@@ -68,7 +72,6 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(text, parse_mode='HTML')
 
 async def app_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Команда /app - прямая ссылка на приложение"""
     keyboard = InlineKeyboardMarkup([[
         InlineKeyboardButton("🚀 Открыть приложение", web_app=WebAppInfo(url=APP_URL))
     ]])
@@ -79,7 +82,6 @@ async def app_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 async def support_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Команда /support - поддержка"""
     text = (
         "🛟 <b>Служба поддержки</b>\n\n"
         "📧 Email: <b>ddos_vlados@mail.ru</b>\n"
@@ -89,7 +91,6 @@ async def support_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(text, parse_mode='HTML')
 
 async def about_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Команда /about - о программе"""
     text = (
         "ℹ️ <b>P2P Tracker Pro</b>\n\n"
         "<b>Версия:</b> 2.0.0\n"
@@ -107,7 +108,6 @@ async def about_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 # ========== ОБРАБОТКА КНОПОК ==========
 async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Обработка нажатий на инлайн-кнопки"""
     query = update.callback_query
     await query.answer()
     
@@ -153,29 +153,21 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 # ========== ЗАПУСК БОТА ==========
 def main():
-    """Запуск бота"""
-    if not TOKEN or TOKEN == '8824407853:AAHq_BcojLt6FnzKdLgdd6LnuGySb6M2His':
-        print("❌ ОШИБКА: BOT_TOKEN не указан!")
-        print("Добавьте переменную окружения BOT_TOKEN в настройках хостинга")
+    if not TOKEN:
+        print("❌ ОШИБКА: BOT_TOKEN не найден в файле .env")
         return
     
-    # Создаём приложение
     application = Application.builder().token(TOKEN).build()
     
-    # Регистрируем команды
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("help", help_command))
     application.add_handler(CommandHandler("app", app_command))
     application.add_handler(CommandHandler("support", support_command))
     application.add_handler(CommandHandler("about", about_command))
-    
-    # Регистрируем обработчик кнопок
     application.add_handler(CallbackQueryHandler(button_callback))
     
-    # Запускаем бота
     print("✅ Бот P2P Tracker Pro запущен!")
     print(f"📱 URL приложения: {APP_URL}")
-    print("⏳ Бот работает и ожидает команды...")
     
     application.run_polling(allowed_updates=Update.ALL_TYPES)
 
