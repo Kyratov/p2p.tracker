@@ -23,22 +23,36 @@ logging.basicConfig(
 # ========== КЛАВИАТУРЫ ==========
 
 def get_main_menu():
-    """Главное меню — чистое, без смайликов"""
+    """Главное меню — стильное, с минимальными иконками"""
     keyboard = [
-        [InlineKeyboardButton("Открыть приложение", web_app=WebAppInfo(url=APP_URL))],
-        [InlineKeyboardButton("Помощь", callback_data="help"),
-         InlineKeyboardButton("О боте", callback_data="about")],
-        [InlineKeyboardButton("Поддержка", callback_data="support"),
-         InlineKeyboardButton("Приложение", callback_data="app")]
+        [InlineKeyboardButton("📱 Открыть приложение", web_app=WebAppInfo(url=APP_URL))],
+        [InlineKeyboardButton("❓ Помощь", callback_data="help"),
+         InlineKeyboardButton("ℹ️ О боте", callback_data="about")],
+        [InlineKeyboardButton("🛟 Поддержка", callback_data="support"),
+         InlineKeyboardButton("🔗 Приложение", callback_data="app")]
     ]
     return InlineKeyboardMarkup(keyboard)
 
 def get_back_menu():
-    """Клавиатура с кнопкой возврата"""
+    """Клавиатура с кнопкой возврата в главное меню"""
     keyboard = [
-        [InlineKeyboardButton("← Назад", callback_data="main_menu")]
+        [InlineKeyboardButton("◀️ Назад в главное меню", callback_data="main_menu")]
     ]
     return InlineKeyboardMarkup(keyboard)
+
+def get_simple_back():
+    """Простая кнопка назад для коротких сообщений"""
+    keyboard = [
+        [InlineKeyboardButton("◀️ Назад", callback_data="main_menu")]
+    ]
+    return InlineKeyboardMarkup(keyboard)
+
+# ========== ФОРМАТИРОВАНИЕ ТЕКСТА ==========
+
+def format_text(title, content):
+    """Форматирует текст с разделителями"""
+    separator = "─" * 30
+    return f"<b>{title}</b>\n\n{content}\n\n{separator}"
 
 # ========== КОМАНДЫ ==========
 
@@ -48,14 +62,14 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     first_name = user.first_name or "Пользователь"
     
     text = (
-        f"Здравствуйте, {first_name}.\n\n"
-        f"P2P Tracker Pro — профессиональный учёт P2P-сделок.\n\n"
-        f"Возможности:\n"
-        f"— Автоматический расчёт прибыли\n"
-        f"— Импорт из Telegram Wallet\n"
-        f"— Синхронизация между устройствами\n"
-        f"— 10 языков интерфейса\n\n"
-        f"Нажмите «Открыть приложение», чтобы начать работу."
+        f"<b>Добро пожаловать, {first_name}!</b>\n\n"
+        f"<b>P2P Tracker Pro</b> — профессиональный инструмент для учёта P2P-сделок.\n\n"
+        f"<b>Возможности:</b>\n"
+        f"├ Автоматический расчёт прибыли\n"
+        f"├ Импорт из Telegram Wallet\n"
+        f"├ Синхронизация между устройствами\n"
+        f"└ 10 языков интерфейса\n\n"
+        f"<i>Нажмите «Открыть приложение», чтобы начать работу.</i>"
     )
     
     await update.message.reply_text(
@@ -66,20 +80,20 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Раздел помощи"""
-    text = (
-        "Помощь\n\n"
-        "Как начать работу:\n"
-        "1. Нажмите «Открыть приложение»\n"
-        "2. Добавьте сделку во вкладке «Создать»\n"
-        "3. Импортируйте историю из Telegram Wallet\n"
-        "4. Следите за прибылью на главном экране\n\n"
-        "Команды бота:\n"
-        "/start — Главное меню\n"
-        "/help — Помощь\n"
-        "/app — Открыть приложение\n"
-        "/support — Поддержка\n"
-        "/about — О боте\n\n"
-        "Синхронизация:\n"
+    text = format_text(
+        "📖 Помощь",
+        "<b>Как начать работу:</b>\n"
+        "1️⃣ Нажмите «Открыть приложение»\n"
+        "2️⃣ Добавьте сделку во вкладке «Создать»\n"
+        "3️⃣ Импортируйте историю из Telegram Wallet\n"
+        "4️⃣ Следите за прибылью на главном экране\n\n"
+        "<b>Команды бота:</b>\n"
+        "├ /start — Главное меню\n"
+        "├ /help — Помощь\n"
+        "├ /app — Открыть приложение\n"
+        "├ /support — Поддержка\n"
+        "└ /about — О боте\n\n"
+        "<b>Синхронизация:</b>\n"
         "Данные сохраняются в облаке Telegram и доступны с любого устройства."
     )
     await update.message.reply_text(
@@ -90,16 +104,20 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def about_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """О боте"""
-    text = (
-        "О боте\n\n"
-        "Название: P2P Tracker Pro\n"
-        "Версия: 3.0.0\n"
-        "Разработчик: Vlad\n\n"
-        "Поддерживаемые языки:\n"
-        "Русский, English, Deutsch, Français, 中文, 日本語, Қазақша, Українська, Беларуская, Српски\n\n"
-        "Технологии:\n"
-        "Telegram WebApp, Telegram Cloud Storage, Python\n\n"
-        "© 2026 P2P Tracker Pro"
+    text = format_text(
+        "ℹ️ О боте",
+        "<b>Название:</b> P2P Tracker Pro\n"
+        "<b>Версия:</b> 3.0.0\n"
+        "<b>Разработчик:</b> Vlad\n\n"
+        "<b>Поддерживаемые языки:</b>\n"
+        "Русский, English, Deutsch, Français,\n"
+        "中文, 日本語, Қазақша, Українська,\n"
+        "Беларуская, Српски\n\n"
+        "<b>Технологии:</b>\n"
+        "├ Telegram WebApp\n"
+        "├ Telegram Cloud Storage\n"
+        "└ Python + python-telegram-bot\n\n"
+        "<b>© 2026 P2P Tracker Pro</b>"
     )
     await update.message.reply_text(
         text,
@@ -109,13 +127,13 @@ async def about_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def support_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Поддержка"""
-    text = (
-        "Поддержка\n\n"
-        "По всем вопросам обращайтесь:\n\n"
-        "Email: ddos_vlados@mail.ru\n"
-        "Telegram: @KyratovVD\n\n"
-        "Время ответа: обычно в течение 24 часов.\n\n"
-        "Пожалуйста, описывайте проблему подробно и прикладывайте скриншоты."
+    text = format_text(
+        "🛟 Поддержка",
+        "<b>По всем вопросам обращайтесь:</b>\n\n"
+        "📧 <b>Email:</b> <code>ddos_vlados@mail.ru</code>\n"
+        "💬 <b>Telegram:</b> @KyratovVD\n\n"
+        "⏰ <b>Время ответа:</b> обычно в течение 24 часов\n\n"
+        "<i>Пожалуйста, описывайте проблему подробно и прикладывайте скриншоты.</i>"
     )
     await update.message.reply_text(
         text,
@@ -126,14 +144,15 @@ async def support_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def app_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Ссылка на приложение"""
     keyboard = InlineKeyboardMarkup([
-        [InlineKeyboardButton("Открыть приложение", web_app=WebAppInfo(url=APP_URL))],
-        [InlineKeyboardButton("← Назад", callback_data="main_menu")]
+        [InlineKeyboardButton("📱 Открыть приложение", web_app=WebAppInfo(url=APP_URL))],
+        [InlineKeyboardButton("◀️ Назад в главное меню", callback_data="main_menu")]
     ])
     
     text = (
-        "Приложение\n\n"
+        "<b>🔗 Приложение</b>\n\n"
         "Нажмите на кнопку ниже, чтобы открыть P2P Tracker Pro.\n\n"
-        "Совет: добавьте бота в главное меню Telegram для быстрого доступа."
+        "<i>Совет: добавьте бота в главное меню Telegram для быстрого доступа.</i>\n\n"
+        "─" * 30
     )
     
     await update.message.reply_text(
@@ -150,17 +169,18 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     await query.answer()
     
+    # Главное меню
     if query.data == "main_menu":
         first_name = user.first_name or "Пользователь"
         text = (
-            f"Здравствуйте, {first_name}.\n\n"
-            f"P2P Tracker Pro — профессиональный учёт P2P-сделок.\n\n"
-            f"Возможности:\n"
-            f"— Автоматический расчёт прибыли\n"
-            f"— Импорт из Telegram Wallet\n"
-            f"— Синхронизация между устройствами\n"
-            f"— 10 языков интерфейса\n\n"
-            f"Нажмите «Открыть приложение», чтобы начать работу."
+            f"<b>Добро пожаловать, {first_name}!</b>\n\n"
+            f"<b>P2P Tracker Pro</b> — профессиональный инструмент для учёта P2P-сделок.\n\n"
+            f"<b>Возможности:</b>\n"
+            f"├ Автоматический расчёт прибыли\n"
+            f"├ Импорт из Telegram Wallet\n"
+            f"├ Синхронизация между устройствами\n"
+            f"└ 10 языков интерфейса\n\n"
+            f"<i>Нажмите «Открыть приложение», чтобы начать работу.</i>"
         )
         await query.edit_message_text(
             text,
@@ -168,21 +188,22 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=get_main_menu()
         )
     
+    # Помощь
     elif query.data == "help":
-        text = (
-            "Помощь\n\n"
-            "Как начать работу:\n"
-            "1. Нажмите «Открыть приложение»\n"
-            "2. Добавьте сделку во вкладке «Создать»\n"
-            "3. Импортируйте историю из Telegram Wallet\n"
-            "4. Следите за прибылью на главном экране\n\n"
-            "Команды бота:\n"
-            "/start — Главное меню\n"
-            "/help — Помощь\n"
-            "/app — Открыть приложение\n"
-            "/support — Поддержка\n"
-            "/about — О боте\n\n"
-            "Синхронизация:\n"
+        text = format_text(
+            "📖 Помощь",
+            "<b>Как начать работу:</b>\n"
+            "1️⃣ Нажмите «Открыть приложение»\n"
+            "2️⃣ Добавьте сделку во вкладке «Создать»\n"
+            "3️⃣ Импортируйте историю из Telegram Wallet\n"
+            "4️⃣ Следите за прибылью на главном экране\n\n"
+            "<b>Команды бота:</b>\n"
+            "├ /start — Главное меню\n"
+            "├ /help — Помощь\n"
+            "├ /app — Открыть приложение\n"
+            "├ /support — Поддержка\n"
+            "└ /about — О боте\n\n"
+            "<b>Синхронизация:</b>\n"
             "Данные сохраняются в облаке Telegram и доступны с любого устройства."
         )
         await query.edit_message_text(
@@ -191,17 +212,22 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=get_back_menu()
         )
     
+    # О боте
     elif query.data == "about":
-        text = (
-            "О боте\n\n"
-            "Название: P2P Tracker Pro\n"
-            "Версия: 3.0.0\n"
-            "Разработчик: Vlad\n\n"
-            "Поддерживаемые языки:\n"
-            "Русский, English, Deutsch, Français, 中文, 日本語, Қазақша, Українська, Беларуская, Српски\n\n"
-            "Технологии:\n"
-            "Telegram WebApp, Telegram Cloud Storage, Python\n\n"
-            "© 2026 P2P Tracker Pro"
+        text = format_text(
+            "ℹ️ О боте",
+            "<b>Название:</b> P2P Tracker Pro\n"
+            "<b>Версия:</b> 3.0.0\n"
+            "<b>Разработчик:</b> Vlad\n\n"
+            "<b>Поддерживаемые языки:</b>\n"
+            "Русский, English, Deutsch, Français,\n"
+            "中文, 日本語, Қазақша, Українська,\n"
+            "Беларуская, Српски\n\n"
+            "<b>Технологии:</b>\n"
+            "├ Telegram WebApp\n"
+            "├ Telegram Cloud Storage\n"
+            "└ Python + python-telegram-bot\n\n"
+            "<b>© 2026 P2P Tracker Pro</b>"
         )
         await query.edit_message_text(
             text,
@@ -209,14 +235,15 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=get_back_menu()
         )
     
+    # Поддержка
     elif query.data == "support":
-        text = (
-            "Поддержка\n\n"
-            "По всем вопросам обращайтесь:\n\n"
-            "Email: ddos_vlados@mail.ru\n"
-            "Telegram: @KyratovVD\n\n"
-            "Время ответа: обычно в течение 24 часов.\n\n"
-            "Пожалуйста, описывайте проблему подробно и прикладывайте скриншоты."
+        text = format_text(
+            "🛟 Поддержка",
+            "<b>По всем вопросам обращайтесь:</b>\n\n"
+            "📧 <b>Email:</b> <code>ddos_vlados@mail.ru</code>\n"
+            "💬 <b>Telegram:</b> @KyratovVD\n\n"
+            "⏰ <b>Время ответа:</b> обычно в течение 24 часов\n\n"
+            "<i>Пожалуйста, описывайте проблему подробно и прикладывайте скриншоты.</i>"
         )
         await query.edit_message_text(
             text,
@@ -224,15 +251,17 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=get_back_menu()
         )
     
+    # Приложение
     elif query.data == "app":
         keyboard = InlineKeyboardMarkup([
-            [InlineKeyboardButton("Открыть приложение", web_app=WebAppInfo(url=APP_URL))],
-            [InlineKeyboardButton("← Назад", callback_data="main_menu")]
+            [InlineKeyboardButton("📱 Открыть приложение", web_app=WebAppInfo(url=APP_URL))],
+            [InlineKeyboardButton("◀️ Назад в главное меню", callback_data="main_menu")]
         ])
         text = (
-            "Приложение\n\n"
+            "<b>🔗 Приложение</b>\n\n"
             "Нажмите на кнопку ниже, чтобы открыть P2P Tracker Pro.\n\n"
-            "Совет: добавьте бота в главное меню Telegram для быстрого доступа."
+            "<i>Совет: добавьте бота в главное меню Telegram для быстрого доступа.</i>\n\n"
+            "─" * 30
         )
         await query.edit_message_text(
             text,
@@ -255,10 +284,10 @@ def main():
     # Обработчик кнопок
     application.add_handler(CallbackQueryHandler(button_callback))
     
-    print("=" * 40)
-    print("P2P Tracker Pro бот запущен")
+    print("═" * 40)
+    print("P2P Tracker Pro бот успешно запущен")
     print(f"URL приложения: {APP_URL}")
-    print("=" * 40)
+    print("═" * 40)
     
     application.run_polling(allowed_updates=Update.ALL_TYPES)
 
