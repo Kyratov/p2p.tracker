@@ -37,18 +37,25 @@
         .deal-stat-chip .label{font-size:11px;color:#64748b}
         .deal-stat-chip .value{font-size:20px;font-weight:700;margin-top:4px}
         .transaction-card{background:#fff;border-radius:20px;margin-bottom:12px;overflow:hidden;border:1px solid #e5e7eb}
-        .transaction-header{padding:12px 14px 6px;display:flex;justify-content:space-between}
+        .transaction-header{padding:12px 14px 8px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e5e7eb}
         .transaction-type{display:flex;align-items:center;gap:8px}
         .type-icon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px}
         .type-icon.buy{background:rgba(239,68,68,0.15);color:#ef4444}
         .type-icon.sell{background:rgba(16,185,129,0.15);color:#10b981}
         .type-name{font-weight:600;font-size:14px}
-        .transaction-date{font-size:10px;color:#94a3b8}
-        .transaction-body{padding:6px 14px 12px}
-        .amount-row{display:flex;justify-content:space-between;margin-bottom:10px}
+        .transaction-date{font-size:12px;color:#64748b}
+        .transaction-body{padding:12px 14px}
+        .amount-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #e5e7eb}
         .rub-amount{font-size:18px;font-weight:700}
         .usdt-amount{font-size:18px;font-weight:700;color:#3b82f6}
-        .transaction-footer{padding:8px 14px;display:flex;justify-content:center;gap:16px;border-top:1px solid #e8ecf0}
+        .info-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;padding:5px 8px;background:#f8fafc;border-radius:14px;font-size:11px}
+        .info-row a{color:#60a5fa;text-decoration:none}
+        .info-row a:hover{text-decoration:underline}
+        .info-label{font-weight:500;color:#64748b}
+        .info-value{font-weight:600}
+        .info-value.positive{color:#10b981}
+        .info-value.negative{color:#ef4444}
+        .transaction-footer{padding:10px 14px 12px;display:flex;justify-content:center;gap:16px;border-top:1px solid #e5e7eb;margin-top:8px}
         .action-btn{background:none;border:none;padding:6px 16px;border-radius:30px;font-size:13px;cursor:pointer}
         .action-btn.edit{color:#3b82f6;background:rgba(59,130,246,0.1)}
         .action-btn.delete{color:#ef4444;background:rgba(239,68,68,0.1)}
@@ -57,22 +64,28 @@
         .search-box input{width:100%;padding:10px 16px;border-radius:30px;border:1px solid #e2e8f0;font-size:13px}
         .filter-buttons{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
         .filter-pill{background:#f1f5f9;border:1px solid #e2e8f0;padding:6px 16px;border-radius:40px;font-size:12px;cursor:pointer;color:#475569}
-        .filter-pill.active{background:#3b82f6;color:#fff}
+        .filter-pill.active{background:#3b82f6;color:#fff;border-color:#3b82f6}
         .empty-state{text-align:center;padding:40px 20px;color:#94a3b8;font-size:13px}
         .modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:1000;padding:20px}
         .modal-content{background:#fff;border-radius:32px;padding:24px;width:100%;max-width:480px;max-height:85vh;overflow-y:auto;border:1px solid #e5e7eb}
-        .modal-content h3{font-size:22px;margin-bottom:20px;text-align:center;background:linear-gradient(135deg,#3b82f6,#8b5cf6);-webkit-background-clip:text;background-clip:text;color:transparent}
+        body.dark .modal-content{background:#1e293b;border-color:#334155}
+        .modal-content h3{font-size:20px;margin-bottom:20px;text-align:center;color:#1e293b;background:none;-webkit-background-clip:unset;background-clip:unset;color:#1e293b}
+        body.dark .modal-content h3{color:#f1f5f9}
         .select-wrapper{position:relative}
         select{appearance:none;padding:12px 40px 12px 16px;border:1.5px solid #e2e8f0;border-radius:24px;font-size:15px;width:100%}
         .select-wrapper::after{content:"▼";position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:11px;pointer-events:none;color:#fbbf24}
         .settings-group{margin-bottom:20px}
         .settings-title{font-size:13px;font-weight:500;color:#64748b;margin-bottom:12px}
-        .language-buttons{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
-        .lang-option{width:44px;height:44px;border-radius:50%;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;background:#f1f5f9;border:1px solid #e5e7eb}
-        .lang-option.active{background:#3b82f6;transform:scale(1.05)}
+        .language-buttons{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+        .lang-option{width:42px;height:42px;border-radius:50%;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;background:#f1f5f9;border:1px solid #e5e7eb;transition:all 0.2s}
+        .lang-option.active{background:#3b82f6;border-color:#3b82f6;transform:scale(1.05)}
+        body.dark .lang-option{background:#334155;border-color:#475569}
+        body.dark .lang-option.active{background:#3b82f6;border-color:#3b82f6}
         .theme-options{display:flex;gap:12px}
         .theme-option{flex:1;padding:12px;border-radius:40px;font-size:14px;font-weight:500;cursor:pointer;text-align:center;background:#f1f5f9;color:#1e293b;border:1px solid #e5e7eb}
-        .theme-option.active{background:#3b82f6;color:#fff}
+        .theme-option.active{background:#3b82f6;color:#fff;border-color:#3b82f6}
+        body.dark .theme-option{background:#334155;color:#f1f5f9;border-color:#475569}
+        body.dark .theme-option.active{background:#3b82f6;color:#fff;border-color:#3b82f6}
         .sync-card{background:#f8fafc;border-radius:20px;padding:16px}
         .sync-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #e5e7eb}
         .sync-row:last-child{border-bottom:none}
@@ -87,23 +100,30 @@
         .result-field{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:24px;padding:12px;text-align:center;margin-top:16px;font-weight:600}
         .mt-2{margin-top:12px}
         .mt-3{margin-top:12px}
-        .info-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;padding:5px 8px;background:#f8fafc;border-radius:14px;font-size:11px}
         body.dark{background:#0f172a;color:#f1f5f9}
         body.dark .card{background:#1e293b;border-color:#334155}
         body.dark h2{color:#f1f5f9}
         body.dark .rate-card{background:#1e293b;border-color:#334155;color:#f1f5f9}
         body.dark .deal-stat-chip{background:#1e293b;border-color:#334155}
         body.dark .transaction-card{background:#1e293b;border-color:#334155}
+        body.dark .transaction-header{border-bottom-color:#334155}
+        body.dark .amount-row{border-bottom-color:#334155}
+        body.dark .transaction-footer{border-top-color:#334155}
         body.dark .type-name{color:#f1f5f9}
+        body.dark .transaction-date{color:#94a3b8}
         body.dark .info-row{background:#334155}
+        body.dark .info-label{color:#94a3b8}
         body.dark .tabs{background:rgba(30,41,59,0.95)}
         body.dark .tab-btn.active{background:#1e3a5f;color:#a78bfa}
         body.dark input,body.dark select,body.dark textarea{background:#0f172a;border-color:#334155;color:#f1f5f9}
         body.dark .btn{background:#2563eb}
+        body.dark .btn-green{background:#059669}
+        body.dark .btn-red{background:#dc2626}
         body.dark .center-btn{background:#334155;color:#f1f5f9;border-color:#475569}
-        body.dark .filter-pill{background:#334155;color:#e2e8f0}
-        body.dark .lang-option{background:#334155;border-color:#475569}
+        body.dark .filter-pill{background:#334155;color:#e2e8f0;border-color:#475569}
+        body.dark .filter-pill.active{background:#3b82f6;color:#fff;border-color:#3b82f6}
         body.dark .sync-card{background:#1e293b}
+        body.dark .sync-row{border-bottom-color:#334155}
         body.dark .result-field{background:#334155;border-color:#475569;color:#f1f5f9}
     </style>
     <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
@@ -188,7 +208,7 @@
 
     <div id="supportTab" class="tab-content">
         <div class="card">
-            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px"><div style="font-size:32px">🛟</div><h2 data-i18n="more.support">Техподдержка</h2></div>
+            <h2 data-i18n="more.support">Техподдержка</h2>
             <p style="margin-bottom:16px;font-size:13px;color:#64748b" data-i18n="more.supportDesc">Напишите нам, если нашли баг или есть идеи</p>
             <button id="supportBtn" class="btn" data-i18n="more.supportBtn">Открыть чат</button>
         </div>
@@ -218,7 +238,7 @@
 </div>
 
 <script>
-    // ========== ПЕРЕВОДЫ (6 языков) ==========
+    // ========== ПЕРЕВОДЫ (10 языков) ==========
     const translations = {
         ru: {
             tabs: { home: "Главная", create: "Создать", calculator: "Калькулятор", more: "Прочее" },
@@ -279,6 +299,46 @@
             deal: { buy: "USDT kaufen", sell: "USDT verkaufen", price: "Preis", margin: "Marge", paymentMethod: "Zahlung", dealNumber: "Nummer", checkLink: "Link", edit: "Bearbeiten", delete: "Löschen", deleteConfirm: "Transaktion löschen?", insufficient: "Nicht genug USDT", noPurchases: "keine Käufe" },
             modal: { history: "Gesamte Historie", search: "Suchen", all: "Alle", buys: "Käufe", sells: "Verkäufe", editTitle: "Transaktion bearbeiten", save: "Speichern", cancel: "Abbrechen", noDealsFound: "Keine Transaktionen gefunden" },
             currencies: { usd: "USD", eur: "EUR", cny: "CNY" }
+        },
+        fr: {
+            tabs: { home: "Accueil", create: "Créer", calculator: "Calculatrice", more: "Plus" },
+            home: { realProfit: "Bénéfice réel (RUB)", recentOperations: "Opérations récentes", buys: "Achats", sells: "Ventes", totalDeals: "Total", showAllHistory: "Afficher tout l'historique", deleteAll: "Supprimer toutes les transactions", noDeals: "Aucune transaction", deleteAllConfirm: "Supprimer TOUTES les transactions?", deleteAllSuccess: "Toutes les transactions supprimées" },
+            create: { title: "Nouvelle transaction", type: "Type", buy: "Acheter USDT", sell: "Vendre USDT", date: "Date (JJ.MM.AA)", amountRub: "Montant (RUB)", amountUsdt: "Montant USDT", price: "Prix par 1 USDT", paymentMethod: "Méthode de paiement", dealNumber: "Numéro de transaction", checkLink: "Lien du reçu", submit: "Enregistrer", success: "Transaction ajoutée", fillFields: "Remplissez les champs", invalidDate: "Format de date invalide" },
+            calculator: { title: "Quantité USDT", rubAmount: "Montant RUB", usdtRate: "Taux USDT (RUB)", calculate: "Calculer", result: "Vous recevez", resultPlaceholder: "Résultat", secondTitle: "Prix d'achat", secondRub: "Montant RUB", secondUsdt: "USDT reçus", secondCalculate: "Calculer le prix", secondResult: "Prix par 1 USDT", fillBoth: "Remplissez les deux champs" },
+            more: { support: "Support", supportDesc: "Écrivez-nous si vous trouvez un bug ou avez des idées", supportBtn: "Ouvrir le chat", import: "Importer depuis Telegram Wallet", importAdd: "Importer", settings: "Paramètres", language: "Langue", theme: "Thème", themeLight: "Clair", themeDark: "Sombre", syncStatus: "Synchronisation", syncBtn: "Vérifier la synchronisation", noFile: "Sélectionnez un fichier", importSuccess: "{{count}} transactions importées" },
+            deal: { buy: "Acheter USDT", sell: "Vendre USDT", price: "Prix", margin: "Marge", paymentMethod: "Paiement", dealNumber: "Numéro", checkLink: "Lien", edit: "Modifier", delete: "Supprimer", deleteConfirm: "Supprimer la transaction?", insufficient: "USDT insuffisants", noPurchases: "aucun achat" },
+            modal: { history: "Historique complet", search: "Rechercher", all: "Tous", buys: "Achats", sells: "Ventes", editTitle: "Modifier la transaction", save: "Enregistrer", cancel: "Annuler", noDealsFound: "Aucune transaction trouvée" },
+            currencies: { usd: "USD", eur: "EUR", cny: "CNY" }
+        },
+        zh: {
+            tabs: { home: "主页", create: "创建", calculator: "计算器", more: "更多" },
+            home: { realProfit: "实际利润 (RUB)", recentOperations: "最近操作", buys: "买入", sells: "卖出", totalDeals: "总计", showAllHistory: "显示全部历史", deleteAll: "删除所有交易", noDeals: "暂无交易", deleteAllConfirm: "删除所有交易？", deleteAllSuccess: "所有交易已删除" },
+            create: { title: "新交易", type: "类型", buy: "买入 USDT", sell: "卖出 USDT", date: "日期 (DD.MM.YY)", amountRub: "金额 (RUB)", amountUsdt: "USDT 数量", price: "1 USDT 价格", paymentMethod: "支付方式", dealNumber: "交易编号", checkLink: "收据链接", submit: "保存交易", success: "交易已添加", fillFields: "请填写字段", invalidDate: "日期格式无效" },
+            calculator: { title: "USDT 数量", rubAmount: "RUB 金额", usdtRate: "USDT 汇率 (RUB)", calculate: "计算", result: "您将获得", resultPlaceholder: "结果", secondTitle: "购买价格", secondRub: "RUB 金额", secondUsdt: "收到 USDT", secondCalculate: "计算价格", secondResult: "1 USDT 价格", fillBoth: "请填写两个字段" },
+            more: { support: "技术支持", supportDesc: "如有问题或建议，请与我们联系", supportBtn: "打开聊天", import: "从 Telegram Wallet 导入", importAdd: "导入", settings: "设置", language: "语言", theme: "主题", themeLight: "浅色", themeDark: "深色", syncStatus: "同步", syncBtn: "检查同步", noFile: "请选择文件", importSuccess: "已导入 {{count}} 笔交易" },
+            deal: { buy: "买入 USDT", sell: "卖出 USDT", price: "价格", margin: "利润", paymentMethod: "支付", dealNumber: "编号", checkLink: "链接", edit: "编辑", delete: "删除", deleteConfirm: "删除交易？", insufficient: "USDT 不足", noPurchases: "无买入记录" },
+            modal: { history: "完整历史", search: "搜索", all: "全部", buys: "买入", sells: "卖出", editTitle: "编辑交易", save: "保存", cancel: "取消", noDealsFound: "未找到交易" },
+            currencies: { usd: "USD", eur: "EUR", cny: "CNY" }
+        },
+        kk: {
+            tabs: { home: "Басты бет", create: "Құру", calculator: "Калькулятор", more: "Басқа" },
+            home: { realProfit: "Нақты пайда (RUB)", recentOperations: "Соңғы операциялар", buys: "Сатып алулар", sells: "Сатулар", totalDeals: "Барлығы", showAllHistory: "Барлық тарихты көрсету", deleteAll: "Барлық мәмілелерді жою", noDeals: "Мәмілелер жоқ", deleteAllConfirm: "Барлық мәмілелерді жою?", deleteAllSuccess: "Барлық мәмілелер жойылды" },
+            create: { title: "Жаңа мәміле", type: "Операция түрі", buy: "USDT сатып алу", sell: "USDT сату", date: "Күні (КК.АА.ЖЖ)", amountRub: "Сома (RUB)", amountUsdt: "USDT мөлшері", price: "1 USDT бағасы", paymentMethod: "Төлем әдісі", dealNumber: "Мәміле нөмірі", checkLink: "Чек сілтемесі", submit: "Сақтау", success: "Мәміле қосылды", fillFields: "Өрістерді толтырыңыз", invalidDate: "Күн форматы қате" },
+            calculator: { title: "USDT мөлшері", rubAmount: "RUB сомасы", usdtRate: "USDT бағамы (RUB)", calculate: "Есептеу", result: "Сіз аласыз", resultPlaceholder: "Нәтиже", secondTitle: "Сатып алу бағасы", secondRub: "RUB сомасы", secondUsdt: "Алынған USDT", secondCalculate: "Бағаны есептеу", secondResult: "1 USDT бағасы", fillBoth: "Екі өрісті де толтырыңыз" },
+            more: { support: "Қолдау", supportDesc: "Қате тапсаңыз немесе идеяларыңыз болса, бізге жазыңыз", supportBtn: "Чатты ашу", import: "Telegram Wallet-тен импорттау", importAdd: "Импорттау", settings: "Баптаулар", language: "Тіл", theme: "Тақырып", themeLight: "Ашық", themeDark: "Қараңғы", syncStatus: "Синхрондау", syncBtn: "Синхрондауды тексеру", noFile: "Файлды таңдаңыз", importSuccess: "{{count}} мәміле импортталды" },
+            deal: { buy: "USDT сатып алу", sell: "USDT сату", price: "Баға", margin: "Маржа", paymentMethod: "Төлем", dealNumber: "Нөмір", checkLink: "Сілтеме", edit: "Өңдеу", delete: "Жою", deleteConfirm: "Мәмілені жою?", insufficient: "USDT жеткіліксіз", noPurchases: "сатып алулар жоқ" },
+            modal: { history: "Барлық тарих", search: "Іздеу", all: "Барлығы", buys: "Сатып алулар", sells: "Сатулар", editTitle: "Мәмілені өңдеу", save: "Сақтау", cancel: "Болдырмау", noDealsFound: "Мәмілелер табылмады" },
+            currencies: { usd: "USD", eur: "EUR", cny: "CNY" }
+        },
+        ja: {
+            tabs: { home: "ホーム", create: "作成", calculator: "計算機", more: "その他" },
+            home: { realProfit: "実際の利益 (RUB)", recentOperations: "最近の取引", buys: "購入", sells: "売却", totalDeals: "合計", showAllHistory: "全履歴を表示", deleteAll: "全取引を削除", noDeals: "取引がありません", deleteAllConfirm: "全ての取引を削除しますか？", deleteAllSuccess: "全ての取引が削除されました" },
+            create: { title: "新規取引", type: "取引タイプ", buy: "USDTを購入", sell: "USDTを売却", date: "日付 (DD.MM.YY)", amountRub: "金額 (RUB)", amountUsdt: "USDT数量", price: "1 USDTの価格", paymentMethod: "支払い方法", dealNumber: "取引番号", checkLink: "領収書リンク", submit: "保存", success: "取引が追加されました", fillFields: "項目を入力してください", invalidDate: "無効な日付形式" },
+            calculator: { title: "USDT数量", rubAmount: "RUB金額", usdtRate: "USDTレート (RUB)", calculate: "計算", result: "あなたが受け取る", resultPlaceholder: "結果", secondTitle: "購入価格", secondRub: "RUB金額", secondUsdt: "受け取ったUSDT", secondCalculate: "価格を計算", secondResult: "1 USDTの価格", fillBoth: "両方の項目を入力してください" },
+            more: { support: "サポート", supportDesc: "バグやアイデアがあればご連絡ください", supportBtn: "チャットを開く", import: "Telegram Walletからインポート", importAdd: "インポート", settings: "設定", language: "言語", theme: "テーマ", themeLight: "ライト", themeDark: "ダーク", syncStatus: "同期", syncBtn: "同期を確認", noFile: "ファイルを選択してください", importSuccess: "{{count}}件の取引をインポートしました" },
+            deal: { buy: "USDT購入", sell: "USDT売却", price: "価格", margin: "利益", paymentMethod: "支払い", dealNumber: "番号", checkLink: "リンク", edit: "編集", delete: "削除", deleteConfirm: "取引を削除しますか？", insufficient: "USDTが不足しています", noPurchases: "購入履歴がありません" },
+            modal: { history: "全履歴", search: "検索", all: "すべて", buys: "購入", sells: "売却", editTitle: "取引を編集", save: "保存", cancel: "キャンセル", noDealsFound: "取引が見つかりません" },
+            currencies: { usd: "USD", eur: "EUR", cny: "CNY" }
         }
     };
 
@@ -328,8 +388,10 @@
         if (!container) return;
         const languages = [
             { code: 'be', flag: '🇧🇾' }, { code: 'de', flag: '🇩🇪' },
-            { code: 'en', flag: '🇬🇧' }, { code: 'ru', flag: '🇷🇺' },
-            { code: 'sr', flag: '🇷🇸' }, { code: 'uk', flag: '🇺🇦' }
+            { code: 'en', flag: '🇬🇧' }, { code: 'fr', flag: '🇫🇷' },
+            { code: 'ja', flag: '🇯🇵' }, { code: 'kk', flag: '🇰🇿' },
+            { code: 'ru', flag: '🇷🇺' }, { code: 'sr', flag: '🇷🇸' },
+            { code: 'uk', flag: '🇺🇦' }, { code: 'zh', flag: '🇨🇳' }
         ];
         container.innerHTML = '';
         languages.forEach(lang => {
@@ -411,7 +473,6 @@
     }
 
     function formatDate(ts) { return new Date(ts).toLocaleDateString('ru-RU', { day:'numeric', month:'short' }); }
-    function isValidDate(str) { return /^(\d{2})\.(\d{2})\.(\d{2})$/.test(str); }
 
     function renderDealCard(deal) {
         const price = deal.pricePerUsdt ? deal.pricePerUsdt.toFixed(2) : (deal.amountPaid/deal.usdtAmount).toFixed(2);
@@ -425,7 +486,26 @@
         if (deal.counterparty?.trim()) extraHtml += `<div class="info-row"><span class="info-label">💳 ${t('deal.paymentMethod')}:</span><span class="info-value">${deal.counterparty}</span></div>`;
         if (deal.dealNumber?.trim()) extraHtml += `<div class="info-row"><span class="info-label">🔢 ${t('deal.dealNumber')}:</span><span class="info-value">${deal.dealNumber}</span></div>`;
         if (deal.comment?.trim()) extraHtml += `<div class="info-row"><span class="info-label">📎 ${t('deal.checkLink')}:</span><a href="${deal.comment}" target="_blank">${deal.comment.length>40?deal.comment.substring(0,37)+'...':deal.comment}</a></div>`;
-        return `<div class="transaction-card"><div class="transaction-header"><div class="transaction-type"><div class="type-icon ${isBuy?'buy':'sell'}">${isBuy?'🔴':'🟢'}</div><div class="type-name">${isBuy?t('deal.buy'):t('deal.sell')}</div></div><div class="transaction-date">${deal.customDate||formatDate(deal.date)}</div></div><div class="transaction-body"><div class="amount-row"><span class="rub-amount">${deal.amountPaid.toLocaleString()} ₽</span><span class="usdt-amount">${deal.usdtAmount.toFixed(2)} USDT</span></div>${extraHtml}</div><div class="transaction-footer"><button class="action-btn edit" data-id="${deal.id}">✏️ ${t('deal.edit')}</button><button class="action-btn delete" data-id="${deal.id}">🗑️ ${t('deal.delete')}</button></div></div>`;
+        return `<div class="transaction-card">
+            <div class="transaction-header">
+                <div class="transaction-type">
+                    <div class="type-icon ${isBuy?'buy':'sell'}">${isBuy?'🔴':'🟢'}</div>
+                    <div class="type-name">${isBuy?t('deal.buy'):t('deal.sell')}</div>
+                </div>
+                <div class="transaction-date">${deal.customDate||formatDate(deal.date)}</div>
+            </div>
+            <div class="transaction-body">
+                <div class="amount-row">
+                    <span class="rub-amount">${deal.amountPaid.toLocaleString()} ₽</span>
+                    <span class="usdt-amount">${deal.usdtAmount.toFixed(2)} USDT</span>
+                </div>
+                ${extraHtml}
+            </div>
+            <div class="transaction-footer">
+                <button class="action-btn edit" data-id="${deal.id}">✏️ ${t('deal.edit')}</button>
+                <button class="action-btn delete" data-id="${deal.id}">🗑️ ${t('deal.delete')}</button>
+            </div>
+        </div>`;
     }
 
     function renderRecent() {
@@ -481,7 +561,7 @@
         document.getElementById('editModal').onclick = (e) => { if(e.target === e.currentTarget) e.currentTarget.remove(); };
     }
 
-    // Импорт из Excel (работает)
+    // Импорт из Excel
     function importFromTelegramWallet() {
         if (typeof XLSX === 'undefined') {
             alert('❌ Библиотека не загружена. Обновите страницу.');
@@ -570,14 +650,14 @@
     }
     function saveDataToCloud() {
         updateSyncUI();
-        if(!window.Telegram?.WebApp || !Telegram.WebApp.CloudStorage) { localStorage.setItem(getStorageKey(), JSON.stringify(deals)); return; }
-        try { Telegram.WebApp.CloudStorage.setItem(getStorageKey(), JSON.stringify(deals), (error)=>{ if(error) localStorage.setItem(getStorageKey(), JSON.stringify(deals)); updateSyncUI(); }); } catch(e) { localStorage.setItem(getStorageKey(), JSON.stringify(deals)); }
+        if(!window.Telegram?.WebApp || !window.Telegram?.WebApp.CloudStorage) { localStorage.setItem(getStorageKey(), JSON.stringify(deals)); return; }
+        try { window.Telegram.WebApp.CloudStorage.setItem(getStorageKey(), JSON.stringify(deals), (error)=>{ if(error) localStorage.setItem(getStorageKey(), JSON.stringify(deals)); updateSyncUI(); }); } catch(e) { localStorage.setItem(getStorageKey(), JSON.stringify(deals)); }
     }
     function loadDataFromCloud() {
         updateSyncUI();
-        if(!window.Telegram?.WebApp || !Telegram.WebApp.CloudStorage) { loadData(); return; }
+        if(!window.Telegram?.WebApp || !window.Telegram?.WebApp.CloudStorage) { loadData(); return; }
         try {
-            Telegram.WebApp.CloudStorage.getItem(getStorageKey(), (error, result) => {
+            window.Telegram.WebApp.CloudStorage.getItem(getStorageKey(), (error, result) => {
                 if(error) { loadData(); }
                 else if(result && result !== '') { deals = JSON.parse(result); sortDealsByDate(); renderAll(); updateStats(); }
                 else { const stored = localStorage.getItem(getStorageKey()); if(stored) { deals = JSON.parse(stored); sortDealsByDate(); renderAll(); updateStats(); saveDataToCloud(); } else { deals = []; renderAll(); updateStats(); } }
