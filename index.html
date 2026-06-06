@@ -7,14 +7,120 @@
     <style>
         *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
         button,.btn,.btn-green,.btn-red,.center-btn,.tab-btn,.action-btn,.filter-pill,.lang-option,.theme-option,.sync-btn{-webkit-tap-highlight-color:transparent!important;outline:none!important}
-        body{font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,sans-serif;background:#f0f2f5;color:#1e293b;padding-bottom:80px}
+        
+        body{font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,sans-serif;background:#f0f2f5;color:#1e293b;padding-bottom:90px}
+        
         .container{max-width:600px;margin:0 auto;padding:20px 16px}
-        .tabs{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,0.96);backdrop-filter:blur(20px);display:flex;justify-content:space-around;padding:12px 20px 24px;border-top:1px solid rgba(0,0,0,0.08);z-index:100}
-        .tab-btn{background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px;font-weight:500;color:#94a3b8;cursor:pointer;padding:8px 16px;border-radius:40px}
-        .tab-btn svg{width:24px;height:24px;stroke:currentColor;stroke-width:1.8;fill:none}
-        .tab-btn.active{color:#3b82f6;background:#eef2ff}
+        
+        /* Новая плавающая панель навигации с прозрачностью 0.50 */
+        .tabs{
+            position:fixed;
+            bottom:20px;
+            left:50%;
+            transform:translateX(-50%);
+            width:calc(100% - 32px);
+            max-width:500px;
+            background:rgba(255,255,255,0.50);
+            backdrop-filter:blur(20px);
+            -webkit-backdrop-filter:blur(20px);
+            display:flex;
+            justify-content:space-around;
+            padding:8px 12px;
+            border-radius:60px;
+            box-shadow:0 8px 24px rgba(0,0,0,0.12),0 0 0 1px rgba(255,255,255,0.3);
+            z-index:100;
+            border:1px solid rgba(255,255,255,0.5);
+            transition:transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        /* Эффект парения (десктоп) */
+        @media (hover: hover){
+            .tabs:hover{
+                transform:translateX(-50%) translateY(-4px);
+                box-shadow:0 12px 32px rgba(0,0,0,0.15),0 0 0 1px rgba(255,255,255,0.4);
+            }
+        }
+        
+        /* Тёмная тема для плавающей панели */
+        body.dark .tabs{
+            background:rgba(30,41,59,0.50);
+            backdrop-filter:blur(20px);
+            -webkit-backdrop-filter:blur(20px);
+            box-shadow:0 8px 24px rgba(0,0,0,0.3),0 0 0 1px rgba(255,255,255,0.1);
+            border:1px solid rgba(255,255,255,0.1);
+        }
+        
+        body.dark .tabs:hover{
+            box-shadow:0 12px 32px rgba(0,0,0,0.4),0 0 0 1px rgba(255,255,255,0.15);
+        }
+        
+        /* Стили кнопок внутри плавающей панели */
+        .tab-btn{
+            background:none;
+            border:none;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            gap:4px;
+            font-size:11px;
+            font-weight:500;
+            color:#94a3b8;
+            cursor:pointer;
+            padding:8px 16px;
+            border-radius:40px;
+            transition:all 0.2s ease;
+            flex:1;
+            justify-content:center;
+        }
+        
+        .tab-btn svg{
+            width:22px;
+            height:22px;
+            stroke:currentColor;
+            stroke-width:1.8;
+            fill:none;
+            transition:all 0.2s ease;
+        }
+        
+        .tab-btn.active{
+            color:#3b82f6;
+            background:rgba(59,130,246,0.15);
+            transform:scale(1.02);
+        }
+        
+        .tab-btn:active{
+            transform:scale(0.96);
+        }
+        
+        /* Тёмная тема для активной кнопки */
+        body.dark .tab-btn.active{
+            background:rgba(59,130,246,0.25);
+            color:#60a5fa;
+        }
+        
+        /* Адаптация для маленьких экранов */
+        @media (max-width: 480px){
+            .tabs{
+                bottom:16px;
+                width:calc(100% - 24px);
+                padding:6px 10px;
+            }
+            .tab-btn{
+                padding:6px 12px;
+                font-size:10px;
+            }
+            .tab-btn svg{
+                width:20px;
+                height:20px;
+            }
+            body{
+                padding-bottom:85px;
+            }
+        }
+        
         .tab-content{display:none}
         .tab-content.active{display:block}
+        
         .card{background:#fff;border-radius:24px;padding:20px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.04);border:1px solid #e5e7eb}
         h2{font-size:16px;font-weight:600;margin-bottom:16px;color:#1e293b}
         .profit-block{background:linear-gradient(135deg,#8b5cf6,#6d28d9);border-radius:28px;padding:20px;margin-bottom:20px;text-align:center;color:#fff}
@@ -26,9 +132,12 @@
         .rate-card .value{font-size:18px;font-weight:700}
         .rate-card .update-time{font-size:9px;color:#64748b;margin-top:6px}
         .input-group{margin-bottom:16px}
-        input,select,textarea{width:100%;padding:12px 16px;border:1.5px solid #e2e8f0;border-radius:24px;font-size:15px;background:#fff}
+        input,select,textarea{width:100%;padding:12px 16px;border:1.5px solid #e2e8f0;border-radius:24px;font-size:15px;background:#fff;transition:border-color 0.2s}
         input:focus,select:focus,textarea:focus{outline:none;border-color:#3b82f6}
-        .btn,.btn-green,.btn-red,.center-btn{display:block;width:100%;padding:14px 20px;border-radius:40px;font-weight:600;font-size:15px;text-align:center;cursor:pointer;border:none}
+        input.error,select.error,textarea.error{border-color:#ef4444;background:#fef2f2}
+        .error-message{color:#ef4444;font-size:12px;margin-top:4px;margin-left:12px;display:none}
+        .btn,.btn-green,.btn-red,.center-btn{display:block;width:100%;padding:14px 20px;border-radius:40px;font-weight:600;font-size:15px;text-align:center;cursor:pointer;border:none;transition:opacity 0.2s, transform 0.1s}
+        .btn:active,.btn-green:active,.btn-red:active,.center-btn:active{transform:scale(0.98)}
         .btn{background:#3b82f6;color:#fff}
         .btn-green{background:#10b981;color:#fff}
         .btn-red{background:#ef4444;color:#fff}
@@ -37,7 +146,8 @@
         .deal-stat-chip{flex:1;background:#f8fafc;border-radius:16px;padding:12px;text-align:center;border:1px solid #e5e7eb}
         .deal-stat-chip .label{font-size:11px;color:#64748b}
         .deal-stat-chip .value{font-size:20px;font-weight:700;margin-top:4px}
-        .transaction-card{background:#fff;border-radius:20px;margin-bottom:12px;overflow:hidden;border:1px solid #e5e7eb}
+        .transaction-card{background:#fff;border-radius:20px;margin-bottom:12px;overflow:hidden;border:1px solid #e5e7eb;transition:transform 0.2s ease}
+        .transaction-card:active{transform:scale(0.99)}
         .transaction-header{padding:12px 14px 8px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e5e7eb}
         .transaction-type{display:flex;align-items:center;gap:8px}
         .type-icon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px}
@@ -57,14 +167,15 @@
         .info-value.positive{color:#10b981}
         .info-value.negative{color:#ef4444}
         .transaction-footer{padding:10px 14px 12px;display:flex;justify-content:center;gap:16px;border-top:1px solid #e5e7eb;margin-top:8px}
-        .action-btn{background:none;border:none;padding:6px 16px;border-radius:30px;font-size:13px;cursor:pointer}
+        .action-btn{background:none;border:none;padding:6px 16px;border-radius:30px;font-size:13px;cursor:pointer;transition:opacity 0.2s}
         .action-btn.edit{color:#3b82f6;background:rgba(59,130,246,0.1)}
         .action-btn.delete{color:#ef4444;background:rgba(239,68,68,0.1)}
+        .action-btn:active{opacity:0.7}
         .search-history{display:flex;gap:10px;margin-bottom:20px}
         .search-history .search-box{flex:1}
         .search-box input{width:100%;padding:10px 16px;border-radius:30px;border:1px solid #e2e8f0;font-size:13px}
         .filter-buttons{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
-        .filter-pill{background:#f1f5f9;border:1px solid #e2e8f0;padding:6px 16px;border-radius:40px;font-size:12px;cursor:pointer;color:#475569}
+        .filter-pill{background:#f1f5f9;border:1px solid #e2e8f0;padding:6px 16px;border-radius:40px;font-size:12px;cursor:pointer;color:#475569;transition:all 0.2s}
         .filter-pill.active{background:#3b82f6;color:#fff;border-color:#3b82f6}
         .empty-state{text-align:center;padding:40px 20px;color:#94a3b8;font-size:13px}
         .modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:1000;padding:20px}
@@ -83,7 +194,7 @@
         body.dark .lang-option{background:#334155;border-color:#475569}
         body.dark .lang-option.active{background:#3b82f6;border-color:#3b82f6}
         .theme-options{display:flex;gap:12px}
-        .theme-option{flex:1;padding:12px;border-radius:40px;font-size:14px;font-weight:500;cursor:pointer;text-align:center;background:#f1f5f9;color:#1e293b;border:1px solid #e5e7eb}
+        .theme-option{flex:1;padding:12px;border-radius:40px;font-size:14px;font-weight:500;cursor:pointer;text-align:center;background:#f1f5f9;color:#1e293b;border:1px solid #e5e7eb;transition:all 0.2s}
         .theme-option.active{background:#3b82f6;color:#fff;border-color:#3b82f6}
         body.dark .theme-option{background:#334155;color:#f1f5f9;border-color:#475569}
         body.dark .theme-option.active{background:#3b82f6;color:#fff;border-color:#3b82f6}
@@ -101,6 +212,7 @@
         .result-field{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:24px;padding:12px;text-align:center;margin-top:16px;font-weight:600}
         .mt-2{margin-top:12px}
         .mt-3{margin-top:12px}
+        
         body.dark{background:#0f172a;color:#f1f5f9}
         body.dark .card{background:#1e293b;border-color:#334155}
         body.dark h2{color:#f1f5f9}
@@ -114,9 +226,8 @@
         body.dark .transaction-date{color:#94a3b8}
         body.dark .info-row{background:#334155}
         body.dark .info-label{color:#94a3b8}
-        body.dark .tabs{background:rgba(30,41,59,0.95)}
-        body.dark .tab-btn.active{background:#1e3a5f;color:#a78bfa}
         body.dark input,body.dark select,body.dark textarea{background:#0f172a;border-color:#334155;color:#f1f5f9}
+        body.dark input.error,body.dark select.error,body.dark textarea.error{border-color:#ef4444;background:#2d1a1a}
         body.dark .btn{background:#2563eb}
         body.dark .btn-green{background:#059669}
         body.dark .btn-red{background:#dc2626}
@@ -126,6 +237,32 @@
         body.dark .sync-card{background:#1e293b}
         body.dark .sync-row{border-bottom-color:#334155}
         body.dark .result-field{background:#334155;border-color:#475569;color:#f1f5f9}
+        
+        /* Toast уведомление */
+        .toast{
+            position:fixed;
+            bottom:100px;
+            left:0;
+            right:0;
+            margin:0 16px;
+            background:#1e293b;
+            color:#fff;
+            padding:14px 20px;
+            border-radius:60px;
+            font-size:14px;
+            z-index:1000;
+            animation:slideUp 0.3s ease;
+            box-shadow:0 4px 12px rgba(0,0,0,0.15);
+            text-align:center;
+            max-width:calc(100% - 32px);
+            margin-left:auto;
+            margin-right:auto;
+        }
+        body.dark .toast{background:#334155}
+        @keyframes slideUp{
+            from{opacity:0;transform:translateY(20px)}
+            to{opacity:1;transform:translateY(0)}
+        }
     </style>
     <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
     <script>
@@ -178,10 +315,19 @@
             <h2 data-i18n="create.title">Новая сделка</h2>
             <form id="dealForm">
                 <div class="input-group"><div class="select-wrapper"><select id="dealType" required><option value="buy" data-i18n="create.buy">Покупка USDT</option><option value="sell" data-i18n="create.sell">Продажа USDT</option></select></div></div>
-                <div class="input-group"><input type="text" id="dealDate" data-i18n-placeholder="create.date" placeholder="Дата (ДД.ММ.ГГ)" maxlength="10"></div>
-                <div class="input-group"><input type="number" id="amountPaid" data-i18n-placeholder="create.amountRub" placeholder="Сумма (RUB)" step="0.01"></div>
-                <div class="input-group"><input type="number" id="usdtAmount" data-i18n-placeholder="create.amountUsdt" placeholder="Количество USDT" step="0.01"></div>
-                <div class="input-group"><input type="number" id="pricePerUsdt" data-i18n-placeholder="create.price" placeholder="Цена за 1 USDT" step="0.01"></div>
+                <div class="input-group">
+                    <input type="text" id="dealDate" data-i18n-placeholder="create.date" placeholder="Дата (ДД.ММ.ГГ)" maxlength="10">
+                    <div class="error-message" id="dateError"></div>
+                </div>
+                <div class="input-group">
+                    <input type="number" id="amountPaid" data-i18n-placeholder="create.amountRub" placeholder="Сумма (RUB)" step="0.01">
+                    <div class="error-message" id="amountError"></div>
+                </div>
+                <div class="input-group">
+                    <input type="number" id="usdtAmount" data-i18n-placeholder="create.amountUsdt" placeholder="Количество USDT" step="0.01">
+                    <div class="error-message" id="usdtError"></div>
+                </div>
+                <div class="input-group"><input type="number" id="pricePerUsdt" data-i18n-placeholder="create.price" placeholder="Цена за 1 USDT (опционально)" step="0.01"></div>
                 <div class="input-group"><input type="text" id="counterparty" data-i18n-placeholder="create.paymentMethod" placeholder="Метод оплаты"></div>
                 <div class="input-group"><input type="text" id="dealNumber" data-i18n-placeholder="create.dealNumber" placeholder="Номер сделки"></div>
                 <div class="input-group"><textarea id="comment" rows="2" data-i18n-placeholder="create.checkLink" placeholder="Ссылка на чек"></textarea></div>
@@ -232,32 +378,54 @@
 </div>
 
 <div class="tabs">
-    <button class="tab-btn active" data-tab="home"><svg viewBox="0 0 24 24" stroke="currentColor"><path d="M3 9.5L12 3l9 6.5M5 10v9a1 1 0 0 0 1 1h3v-5h6v5h3a1 1 0 0 0 1-1v-9"/></svg><span data-i18n="tabs.home">Главная</span></button>
-    <button class="tab-btn" data-tab="create"><svg viewBox="0 0 24 24" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg><span data-i18n="tabs.create">Создать</span></button>
-    <button class="tab-btn" data-tab="calculator"><svg viewBox="0 0 24 24" stroke="currentColor"><path d="M4 4h16v16H4zM8 8h8M8 12h8M8 16h4"/></svg><span data-i18n="tabs.calculator">Калькулятор</span></button>
-    <button class="tab-btn" data-tab="support"><svg viewBox="0 0 24 24" stroke="currentColor"><circle cx="12" cy="12" r="2.5"/><circle cx="19" cy="12" r="2.5"/><circle cx="5" cy="12" r="2.5"/></svg><span data-i18n="tabs.more">Прочее</span></button>
+    <button class="tab-btn active" data-tab="home">
+        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+            <path d="M3 9.5L12 3l9 6.5M5 10v9a1 1 0 0 0 1 1h3v-5h6v5h3a1 1 0 0 0 1-1v-9"/>
+        </svg>
+        <span data-i18n="tabs.home">Главная</span>
+    </button>
+    <button class="tab-btn" data-tab="create">
+        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+            <path d="M12 5v14M5 12h14"/>
+        </svg>
+        <span data-i18n="tabs.create">Создать</span>
+    </button>
+    <button class="tab-btn" data-tab="calculator">
+        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+            <path d="M4 4h16v16H4zM8 8h8M8 12h8M8 16h4"/>
+        </svg>
+        <span data-i18n="tabs.calculator">Калькулятор</span>
+    </button>
+    <button class="tab-btn" data-tab="support">
+        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+            <circle cx="12" cy="12" r="2.5"/>
+            <circle cx="19" cy="12" r="2.5"/>
+            <circle cx="5" cy="12" r="2.5"/>
+        </svg>
+        <span data-i18n="tabs.more">Прочее</span>
+    </button>
 </div>
 
 <script>
-    // ========== ПЕРЕВОДЫ (2 языка для краткости, можно добавить остальные) ==========
+    // ========== ПЕРЕВОДЫ ==========
     const translations = {
         ru: {
             tabs: { home: "Главная", create: "Создать", calculator: "Калькулятор", more: "Прочее" },
             home: { realProfit: "Реальная прибыль (RUB)", recentOperations: "Последние операции", buys: "Покупок", sells: "Продаж", totalDeals: "Сделок", showAllHistory: "Показать всю историю", deleteAll: "Удалить все сделки", noDeals: "Нет сделок", deleteAllConfirm: "Удалить ВСЕ сделки?", deleteAllSuccess: "Все сделки удалены" },
-            create: { title: "Новая сделка", type: "Тип операции", buy: "Покупка USDT", sell: "Продажа USDT", date: "Дата (ДД.ММ.ГГ)", amountRub: "Сумма (RUB)", amountUsdt: "Количество USDT", price: "Цена за 1 USDT", paymentMethod: "Метод оплаты", dealNumber: "Номер сделки", checkLink: "Ссылка на чек", submit: "Записать сделку", success: "Сделка добавлена", fillFields: "Заполните поля", invalidDate: "Неверный формат даты" },
+            create: { title: "Новая сделка", type: "Тип операции", buy: "Покупка USDT", sell: "Продажа USDT", date: "Дата (ДД.ММ.ГГ)", amountRub: "Сумма (RUB)", amountUsdt: "Количество USDT", price: "Цена за 1 USDT", paymentMethod: "Метод оплаты", dealNumber: "Номер сделки", checkLink: "Ссылка на чек", submit: "Записать сделку", success: "Сделка добавлена", fillFields: "Заполните поля", invalidDate: "Неверный формат даты (ДД.ММ.ГГ)", invalidAmount: "Сумма должна быть больше 0", invalidUsdt: "Количество USDT должно быть больше 0" },
             calculator: { title: "Количество USDT", rubAmount: "Сумма в RUB", usdtRate: "Курс USDT (₽)", calculate: "Рассчитать", result: "Вы получите", resultPlaceholder: "Результат", secondTitle: "Курс покупки", secondRub: "Сумма RUB", secondUsdt: "Получено USDT", secondCalculate: "Узнать цену", secondResult: "Цена за 1 USDT", fillBoth: "Заполните оба поля" },
             more: { support: "Техподдержка", supportDesc: "Напишите нам, если нашли баг или есть идеи", supportBtn: "Открыть чат", import: "Импорт из Telegram Wallet", importAdd: "Импортировать", settings: "Настройки", language: "Язык", theme: "Тема", themeLight: "Светлая", themeDark: "Тёмная", syncStatus: "Синхронизация", syncBtn: "Проверить синхронизацию", noFile: "Выберите файл", importSuccess: "Импортировано {{count}} сделок" },
-            deal: { buy: "Покупка USDT", sell: "Продажа USDT", price: "Цена", margin: "Маржа", paymentMethod: "Оплата", dealNumber: "Номер", checkLink: "Ссылка", edit: "Редактировать", delete: "Удалить", deleteConfirm: "Удалить сделку", insufficient: "Недостаточно USDT", noPurchases: "нет покупок" },
+            deal: { buy: "Покупка USDT", sell: "Продажа USDT", price: "Цена", margin: "Маржа", paymentMethod: "Оплата", dealNumber: "Номер", checkLink: "Ссылка", edit: "Редактировать", delete: "Удалить", deleteConfirm: "Удалить сделку?", insufficient: "Недостаточно USDT", noPurchases: "нет покупок" },
             modal: { history: "Вся история", search: "Поиск", all: "Все", buys: "Покупки", sells: "Продажи", editTitle: "Редактирование сделки", save: "Сохранить", cancel: "Отмена", noDealsFound: "Сделок не найдено" },
             currencies: { usd: "USD", eur: "EUR", cny: "CNY" }
         },
         en: {
             tabs: { home: "Home", create: "Create", calculator: "Calculator", more: "More" },
             home: { realProfit: "Real profit (RUB)", recentOperations: "Recent operations", buys: "Buys", sells: "Sells", totalDeals: "Total", showAllHistory: "Show all history", deleteAll: "Delete all deals", noDeals: "No deals", deleteAllConfirm: "Delete ALL deals?", deleteAllSuccess: "All deals deleted" },
-            create: { title: "New deal", type: "Type", buy: "Buy USDT", sell: "Sell USDT", date: "Date (DD.MM.YY)", amountRub: "Amount (RUB)", amountUsdt: "USDT amount", price: "Price per 1 USDT", paymentMethod: "Payment method", dealNumber: "Deal number", checkLink: "Receipt link", submit: "Save deal", success: "Deal added", fillFields: "Fill fields", invalidDate: "Invalid date" },
+            create: { title: "New deal", type: "Type", buy: "Buy USDT", sell: "Sell USDT", date: "Date (DD.MM.YY)", amountRub: "Amount (RUB)", amountUsdt: "USDT amount", price: "Price per 1 USDT", paymentMethod: "Payment method", dealNumber: "Deal number", checkLink: "Receipt link", submit: "Save deal", success: "Deal added", fillFields: "Fill fields", invalidDate: "Invalid date format (DD.MM.YY)", invalidAmount: "Amount must be greater than 0", invalidUsdt: "USDT amount must be greater than 0" },
             calculator: { title: "USDT amount", rubAmount: "Amount RUB", usdtRate: "USDT rate (RUB)", calculate: "Calculate", result: "You get", resultPlaceholder: "Result", secondTitle: "Purchase price", secondRub: "Amount RUB", secondUsdt: "USDT received", secondCalculate: "Calculate price", secondResult: "Price per 1 USDT", fillBoth: "Fill both fields" },
             more: { support: "Support", supportDesc: "Write us about bugs or ideas", supportBtn: "Open chat", import: "Import from Telegram Wallet", importAdd: "Import", settings: "Settings", language: "Language", theme: "Theme", themeLight: "Light", themeDark: "Dark", syncStatus: "Sync", syncBtn: "Check sync", noFile: "Select file", importSuccess: "Imported {{count}} deals" },
-            deal: { buy: "Buy USDT", sell: "Sell USDT", price: "Price", margin: "Margin", paymentMethod: "Payment", dealNumber: "Number", checkLink: "Link", edit: "Edit", delete: "Delete", deleteConfirm: "Delete deal", insufficient: "Insufficient USDT", noPurchases: "no purchases" },
+            deal: { buy: "Buy USDT", sell: "Sell USDT", price: "Price", margin: "Margin", paymentMethod: "Payment", dealNumber: "Number", checkLink: "Link", edit: "Edit", delete: "Delete", deleteConfirm: "Delete deal?", insufficient: "Insufficient USDT", noPurchases: "no purchases" },
             modal: { history: "Full history", search: "Search", all: "All", buys: "Buys", sells: "Sells", editTitle: "Edit deal", save: "Save", cancel: "Cancel", noDealsFound: "No deals found" },
             currencies: { usd: "USD", eur: "EUR", cny: "CNY" }
         }
@@ -280,6 +448,17 @@
             return value.replace(/\{\{(\w+)\}\}/g, (_, pk) => params[pk] !== undefined ? params[pk] : _);
         }
         return value;
+    }
+
+    function showToast(message, isError = false) {
+        const existingToast = document.querySelector('.toast');
+        if(existingToast) existingToast.remove();
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.style.background = isError ? '#ef4444' : '#10b981';
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
     }
 
     function updateAllTexts() {
@@ -338,6 +517,60 @@
         });
     }
 
+    // ========== ВАЛИДАЦИЯ ==========
+    function validateDate(dateStr) {
+        if (!dateStr) return true;
+        const regex = /^(\d{2})\.(\d{2})\.(\d{2})$/;
+        if (!regex.test(dateStr)) return false;
+        const [_, day, month, year] = dateStr.match(regex);
+        const d = parseInt(day, 10);
+        const m = parseInt(month, 10);
+        const y = parseInt(year, 10);
+        if (d < 1 || d > 31) return false;
+        if (m < 1 || m > 12) return false;
+        if (y < 0 || y > 99) return false;
+        return true;
+    }
+
+    function parseCustomDate(dateStr) {
+        if (!dateStr) return null;
+        const parts = dateStr.split('.');
+        if (parts.length !== 3) return null;
+        const day = parseInt(parts[0], 10);
+        const month = parseInt(parts[1], 10);
+        const year = parseInt(parts[2], 10);
+        const fullYear = 2000 + year;
+        return new Date(fullYear, month - 1, day);
+    }
+
+    function formatDateForDisplay(timestamp, customDate) {
+        if (customDate && validateDate(customDate)) {
+            return customDate;
+        }
+        return new Date(timestamp).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short', year: '2-digit' });
+    }
+
+    function clearFieldErrors() {
+        ['dateError', 'amountError', 'usdtError'].forEach(id => {
+            const el = document.getElementById(id);
+            if(el) el.style.display = 'none';
+        });
+        ['dealDate', 'amountPaid', 'usdtAmount'].forEach(id => {
+            const el = document.getElementById(id);
+            if(el) el.classList.remove('error');
+        });
+    }
+
+    function showFieldError(fieldId, errorId, message) {
+        const field = document.getElementById(fieldId);
+        const errorEl = document.getElementById(errorId);
+        if(field) field.classList.add('error');
+        if(errorEl) {
+            errorEl.textContent = message;
+            errorEl.style.display = 'block';
+        }
+    }
+
     // ========== ОСНОВНЫЕ ФУНКЦИИ ==========
     function getStorageKey() { return `p2p_deals_${localStorage.getItem('p2p_guest_id') || 'guest'}`; }
     
@@ -355,24 +588,36 @@
         saveDataToCloud(); 
     }
     
+    // ПРАВИЛЬНАЯ СОРТИРОВКА ПО ДАТЕ (с поддержкой кастомных дат)
     function sortDealsByDate() { 
-        deals.sort((a, b) => (b.date || 0) - (a.date || 0)); 
+        deals.sort((a, b) => {
+            const dateA = a.customDate ? parseCustomDate(a.customDate) : new Date(a.date);
+            const dateB = b.customDate ? parseCustomDate(b.customDate) : new Date(b.date);
+            if (!dateA && !dateB) return b.date - a.date;
+            if (!dateA) return 1;
+            if (!dateB) return -1;
+            return dateB - dateA;
+        });
     }
     
     function addDeal(deal) { 
         deal.id = Date.now() + Math.random(); 
-        deal.date = Date.now(); 
-        deals.unshift(deal); 
+        if (!deal.date) deal.date = Date.now();
+        deals.push(deal);
+        sortDealsByDate();
         saveData(); 
         renderAll(); 
         updateStats(); 
+        showToast(t('create.success'));
     }
     
     function deleteDeal(id) { 
         deals = deals.filter(d => d.id != id); 
+        sortDealsByDate();
         saveData(); 
         renderAll(); 
         updateStats(); 
+        showToast('Сделка удалена');
     }
     
     function updateStats() { 
@@ -393,13 +638,13 @@
         const buys = deals.filter(d => d.type === 'buy').map(d => ({
             usdt: d.usdtAmount,
             price: d.pricePerUsdt || (d.amountPaid / d.usdtAmount),
-            date: d.date
+            date: d.customDate ? parseCustomDate(d.customDate) : new Date(d.date)
         })).sort((a, b) => a.date - b.date);
         
         const sells = deals.filter(d => d.type === 'sell').map(d => ({
             usdt: d.usdtAmount,
             price: d.pricePerUsdt || (d.amountPaid / d.usdtAmount),
-            date: d.date
+            date: d.customDate ? parseCustomDate(d.customDate) : new Date(d.date)
         })).sort((a, b) => a.date - b.date);
         
         let totalProfit = 0;
@@ -439,14 +684,17 @@
     
     function calculateSimpleMargin(deal) {
         if (deal.type !== 'sell') return null;
-        const buys = deals.filter(d => d.type === 'buy').sort((a, b) => a.date - b.date);
+        const buys = deals.filter(d => d.type === 'buy').sort((a, b) => {
+            const dateA = a.customDate ? parseCustomDate(a.customDate) : new Date(a.date);
+            const dateB = b.customDate ? parseCustomDate(b.customDate) : new Date(b.date);
+            return dateA - dateB;
+        });
         if (buys.length === 0) return null;
         
         let remaining = deal.usdtAmount;
         let totalCost = 0;
-        const tempBuys = [...deals.filter(d => d.type === 'buy').sort((a, b) => a.date - b.date)];
         
-        for (const buy of tempBuys) {
+        for (const buy of buys) {
             if (remaining <= 0.001) break;
             const used = Math.min(remaining, buy.usdtAmount);
             const buyPrice = buy.pricePerUsdt || (buy.amountPaid / buy.usdtAmount);
@@ -461,13 +709,12 @@
         return (sellPrice - avgBuyPrice) * deal.usdtAmount;
     }
 
-    function formatDate(ts) { return new Date(ts).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' }); }
-
     function renderDealCard(deal) {
         const price = deal.pricePerUsdt ? deal.pricePerUsdt.toFixed(2) : (deal.amountPaid / deal.usdtAmount).toFixed(2);
         const isBuy = deal.type === 'buy';
         const margin = !isBuy ? calculateSimpleMargin(deal) : null;
         const marginFormatted = margin !== null ? (margin >= 0 ? `+${margin.toFixed(2)} ₽` : `${margin.toFixed(2)} ₽`) : null;
+        const displayDate = formatDateForDisplay(deal.date, deal.customDate);
         
         let extraHtml = `<div class="info-row"><span class="info-label">💰 ${t('deal.price')}:</span><span class="info-value">${price} ₽</span></div>`;
         if (!isBuy && margin !== null) {
@@ -487,7 +734,7 @@
                     <div class="type-icon ${isBuy ? 'buy' : 'sell'}">${isBuy ? '🔴' : '🟢'}</div>
                     <div class="type-name">${isBuy ? t('deal.buy') : t('deal.sell')}</div>
                 </div>
-                <div class="transaction-date">${deal.customDate || formatDate(deal.date)}</div>
+                <div class="transaction-date">${displayDate}</div>
             </div>
             <div class="transaction-body">
                 <div class="amount-row">
@@ -519,10 +766,10 @@
     }
     
     function attachEvents() {
-        document.querySelectorAll('#recentDealsList .action-btn.delete').forEach(btn => btn.onclick = () => { 
+        document.querySelectorAll('#recentDealsList .action-btn.delete, #historyDealsList .action-btn.delete').forEach(btn => btn.onclick = () => { 
             if (confirm(t('deal.deleteConfirm'))) deleteDeal(btn.dataset.id); 
         });
-        document.querySelectorAll('#recentDealsList .action-btn.edit').forEach(btn => btn.onclick = () => openEditModal(btn.dataset.id));
+        document.querySelectorAll('#recentDealsList .action-btn.edit, #historyDealsList .action-btn.edit').forEach(btn => btn.onclick = () => openEditModal(btn.dataset.id));
     }
 
     function getFilteredHistory() {
@@ -532,7 +779,8 @@
                 const q = historySearchQuery.toLowerCase();
                 const contra = (deal.counterparty || '').toLowerCase();
                 const comment = (deal.comment || '').toLowerCase();
-                if (!contra.includes(q) && !comment.includes(q)) return false;
+                const dealNumber = (deal.dealNumber || '').toLowerCase();
+                if (!contra.includes(q) && !comment.includes(q) && !dealNumber.includes(q)) return false;
             }
             return true;
         });
@@ -546,27 +794,59 @@
             return; 
         }
         container.innerHTML = filtered.map(d => renderDealCard(d)).join('');
-        document.querySelectorAll('#historyDealsList .action-btn.delete').forEach(btn => btn.onclick = () => { 
-            if (confirm(t('deal.deleteConfirm'))) deleteDeal(btn.dataset.id); 
-        });
-        document.querySelectorAll('#historyDealsList .action-btn.edit').forEach(btn => btn.onclick = () => openEditModal(btn.dataset.id));
+        attachEvents();
     }
 
     function openEditModal(id) {
         const deal = deals.find(d => d.id == id);
         if (!deal) return;
-        const modalHtml = `<div class="modal" id="editModal"><div class="modal-content"><h3>${t('modal.editTitle')}</h3><div class="input-group"><div class="select-wrapper"><select id="editType"><option value="buy" ${deal.type === 'buy' ? 'selected' : ''}>${t('create.buy')}</option><option value="sell" ${deal.type === 'sell' ? 'selected' : ''}>${t('create.sell')}</option></select></div></div><div class="input-group"><input type="text" id="editDate" value="${deal.customDate || ''}" placeholder="${t('create.date')}" maxlength="10"></div><div class="input-group"><input type="number" id="editAmount" value="${deal.amountPaid}" step="0.01" placeholder="${t('create.amountRub')}"></div><div class="input-group"><input type="number" id="editUsdt" value="${deal.usdtAmount}" step="0.01" placeholder="${t('create.amountUsdt')}"></div><div class="input-group"><input type="number" id="editPrice" value="${deal.pricePerUsdt || (deal.amountPaid / deal.usdtAmount).toFixed(2)}" step="0.01" placeholder="${t('create.price')}"></div><div class="input-group"><input type="text" id="editCounterparty" value="${deal.counterparty || ''}" placeholder="${t('create.paymentMethod')}"></div><div class="input-group"><input type="text" id="editDealNumber" value="${deal.dealNumber || ''}" placeholder="${t('create.dealNumber')}"></div><div class="input-group"><textarea id="editComment" rows="2" placeholder="${t('create.checkLink')}">${deal.comment || ''}</textarea></div><button id="saveEditBtn" class="btn" style="margin-bottom:12px;">💾 ${t('modal.save')}</button><button id="cancelEditBtn" class="center-btn">${t('modal.cancel')}</button></div></div>`;
+        const modalHtml = `<div class="modal" id="editModal"><div class="modal-content"><h3>${t('modal.editTitle')}</h3><div class="input-group"><div class="select-wrapper"><select id="editType"><option value="buy" ${deal.type === 'buy' ? 'selected' : ''}>${t('create.buy')}</option><option value="sell" ${deal.type === 'sell' ? 'selected' : ''}>${t('create.sell')}</option></select></div></div><div class="input-group"><input type="text" id="editDate" value="${deal.customDate || ''}" placeholder="${t('create.date')}" maxlength="10"><div class="error-message" id="editDateError"></div></div><div class="input-group"><input type="number" id="editAmount" value="${deal.amountPaid}" step="0.01" placeholder="${t('create.amountRub')}"><div class="error-message" id="editAmountError"></div></div><div class="input-group"><input type="number" id="editUsdt" value="${deal.usdtAmount}" step="0.01" placeholder="${t('create.amountUsdt')}"><div class="error-message" id="editUsdtError"></div></div><div class="input-group"><input type="number" id="editPrice" value="${deal.pricePerUsdt || (deal.amountPaid / deal.usdtAmount).toFixed(2)}" step="0.01" placeholder="${t('create.price')}"></div><div class="input-group"><input type="text" id="editCounterparty" value="${deal.counterparty || ''}" placeholder="${t('create.paymentMethod')}"></div><div class="input-group"><input type="text" id="editDealNumber" value="${deal.dealNumber || ''}" placeholder="${t('create.dealNumber')}"></div><div class="input-group"><textarea id="editComment" rows="2" placeholder="${t('create.checkLink')}">${deal.comment || ''}</textarea></div><button id="saveEditBtn" class="btn" style="margin-bottom:12px;">💾 ${t('modal.save')}</button><button id="cancelEditBtn" class="center-btn">${t('modal.cancel')}</button></div></div>`;
         document.body.insertAdjacentHTML('beforeend', modalHtml);
+        
         document.getElementById('saveEditBtn').onclick = () => {
+            let isValid = true;
             const newAmount = parseFloat(document.getElementById('editAmount').value);
             const newUsdt = parseFloat(document.getElementById('editUsdt').value);
-            if (isNaN(newAmount) || isNaN(newUsdt)) { alert(t('create.fillFields')); return; }
+            const editDate = document.getElementById('editDate').value;
+            
+            if (isNaN(newAmount) || newAmount <= 0) {
+                showFieldError('editAmount', 'editAmountError', t('create.invalidAmount'));
+                isValid = false;
+            }
+            if (isNaN(newUsdt) || newUsdt <= 0) {
+                showFieldError('editUsdt', 'editUsdtError', t('create.invalidUsdt'));
+                isValid = false;
+            }
+            if (editDate && !validateDate(editDate)) {
+                showFieldError('editDate', 'editDateError', t('create.invalidDate'));
+                isValid = false;
+            }
+            
+            if (!isValid) return;
+            
             let newPrice = document.getElementById('editPrice').value;
             if (newPrice && !isNaN(parseFloat(newPrice))) newPrice = parseFloat(newPrice);
             else newPrice = newAmount / newUsdt;
-            const newDeal = { type: document.getElementById('editType').value, amountPaid: newAmount, usdtAmount: newUsdt, pricePerUsdt: parseFloat(newPrice.toFixed(2)), counterparty: document.getElementById('editCounterparty').value, dealNumber: document.getElementById('editDealNumber').value, comment: document.getElementById('editComment').value, customDate: document.getElementById('editDate').value };
+            
+            const newDeal = { 
+                type: document.getElementById('editType').value, 
+                amountPaid: newAmount, 
+                usdtAmount: newUsdt, 
+                pricePerUsdt: parseFloat(newPrice.toFixed(2)), 
+                counterparty: document.getElementById('editCounterparty').value, 
+                dealNumber: document.getElementById('editDealNumber').value, 
+                comment: document.getElementById('editComment').value, 
+                customDate: editDate 
+            };
             const idx = deals.findIndex(d => d.id == id);
-            if (idx !== -1) { deals[idx] = { ...deals[idx], ...newDeal, id: deals[idx].id }; saveData(); renderAll(); updateStats(); }
+            if (idx !== -1) { 
+                deals[idx] = { ...deals[idx], ...newDeal, id: deals[idx].id }; 
+                sortDealsByDate();
+                saveData(); 
+                renderAll(); 
+                updateStats(); 
+                showToast('Сделка обновлена');
+            }
             document.getElementById('editModal').remove();
         };
         document.getElementById('cancelEditBtn').onclick = () => document.getElementById('editModal').remove();
@@ -576,18 +856,18 @@
     // ========== ИМПОРТ ИЗ EXCEL ==========
     function importFromTelegramWallet() {
         if (typeof XLSX === 'undefined') {
-            alert('❌ Библиотека не загружена. Обновите страницу.');
+            showToast('❌ Библиотека не загружена. Обновите страницу.', true);
             return;
         }
         const fileInput = document.getElementById('telegramImportFile');
         if (!fileInput.files || !fileInput.files.length) {
-            alert(t('more.noFile'));
+            showToast(t('more.noFile'), true);
             return;
         }
         const file = fileInput.files[0];
         const fileName = file.name.toLowerCase();
         if (!fileName.endsWith('.xlsx') && !fileName.endsWith('.xls')) {
-            alert('❌ Неверный формат. Нужен файл .xlsx или .xls');
+            showToast('❌ Неверный формат. Нужен файл .xlsx или .xls', true);
             fileInput.value = '';
             return;
         }
@@ -598,7 +878,7 @@
                 const workbook = XLSX.read(data, { type: 'array' });
                 const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
                 const rows = XLSX.utils.sheet_to_json(firstSheet, { header: 1, defval: "" });
-                if (!rows || rows.length < 2) { alert('Файл пуст'); return; }
+                if (!rows || rows.length < 2) { showToast('Файл пуст', true); return; }
                 const headers = rows[0].map(c => String(c || '').toLowerCase().trim());
                 const colIndex = {
                     adType: headers.findIndex(h => h.includes('ad type')),
@@ -635,17 +915,19 @@
                     let date = colIndex.completionTime >= 0 ? parseDate(String(row[colIndex.completionTime] || '')) : '';
                     newDeals.push({ type, amountPaid: amount, usdtAmount: usdt, pricePerUsdt: parseFloat((amount / usdt).toFixed(2)), counterparty: method, dealNumber: orderNum, comment: '', customDate: date });
                 }
-                if (newDeals.length === 0) { alert(`Не удалось распознать сделки. Ошибок: ${errors}`); return; }
-                for (const deal of newDeals) addDeal(deal);
-                alert(t('more.importSuccess', { count: newDeals.length }));
+                if (newDeals.length === 0) { showToast(`Не удалось распознать сделки. Ошибок: ${errors}`, true); return; }
+                if (confirm(`Найдено ${newDeals.length} сделок. Импортировать?`)) {
+                    for (const deal of newDeals) addDeal(deal);
+                    showToast(t('more.importSuccess', { count: newDeals.length }));
+                }
                 fileInput.value = '';
-            } catch (err) { alert('Ошибка при чтении файла: ' + err.message); }
+            } catch (err) { showToast('Ошибка при чтении файла: ' + err.message, true); }
         };
-        reader.onerror = function() { alert('Ошибка чтения файла'); };
+        reader.onerror = function() { showToast('Ошибка чтения файла', true); };
         reader.readAsArrayBuffer(file);
     }
 
-    // ========== СИНХРОНИЗАЦИЯ С TELEGRAM CLOUD ==========
+    // ========== СИНХРОНИЗАЦИЯ ==========
     function updateSyncUI() {
         const isInTelegram = !!(window.Telegram?.WebApp);
         const cloudAvailable = !!(window.Telegram?.WebApp?.CloudStorage);
@@ -680,7 +962,7 @@
         } catch (e) { loadData(); }
     }
     
-    function manualSync() { saveDataToCloud(); setTimeout(() => loadDataFromCloud(), 500); }
+    function manualSync() { saveDataToCloud(); setTimeout(() => loadDataFromCloud(), 500); showToast('Синхронизация выполнена'); }
 
     async function fetchExchangeRates() {
         try {
@@ -698,22 +980,52 @@
         } catch (e) { console.error(e); }
     }
 
-    // ========== ОБРАБОТЧИКИ СОБЫТИЙ ==========
+    // ========== ОБРАБОТЧИКИ ==========
     document.getElementById('dealForm').addEventListener('submit', (e) => {
         e.preventDefault();
+        clearFieldErrors();
+        
+        let isValid = true;
         const amountPaid = parseFloat(document.getElementById('amountPaid').value);
         const usdtAmount = parseFloat(document.getElementById('usdtAmount').value);
-        if (isNaN(amountPaid) || isNaN(usdtAmount)) { alert(t('create.fillFields')); return; }
+        const customDate = document.getElementById('dealDate').value;
+        
+        if (isNaN(amountPaid) || amountPaid <= 0) {
+            showFieldError('amountPaid', 'amountError', t('create.invalidAmount'));
+            isValid = false;
+        }
+        if (isNaN(usdtAmount) || usdtAmount <= 0) {
+            showFieldError('usdtAmount', 'usdtError', t('create.invalidUsdt'));
+            isValid = false;
+        }
+        if (customDate && !validateDate(customDate)) {
+            showFieldError('dealDate', 'dateError', t('create.invalidDate'));
+            isValid = false;
+        }
+        
+        if (!isValid) return;
+        
         let price = document.getElementById('pricePerUsdt').value;
         if (price && !isNaN(parseFloat(price))) price = parseFloat(price);
         else price = amountPaid / usdtAmount;
-        addDeal({ type: document.getElementById('dealType').value, amountPaid, usdtAmount, pricePerUsdt: parseFloat(price.toFixed(2)), counterparty: document.getElementById('counterparty').value, dealNumber: document.getElementById('dealNumber').value, comment: document.getElementById('comment').value, customDate: document.getElementById('dealDate').value });
+        
+        addDeal({ 
+            type: document.getElementById('dealType').value, 
+            amountPaid, 
+            usdtAmount, 
+            pricePerUsdt: parseFloat(price.toFixed(2)), 
+            counterparty: document.getElementById('counterparty').value, 
+            dealNumber: document.getElementById('dealNumber').value, 
+            comment: document.getElementById('comment').value, 
+            customDate: customDate || null,
+            date: Date.now()
+        });
+        
         document.getElementById('dealForm').reset();
-        alert(t('create.success'));
     });
     
-    document.getElementById('calcBtn').onclick = () => { const r = parseFloat(document.getElementById('calcRub').value), rate = parseFloat(document.getElementById('calcRate').value); if (isNaN(r) || isNaN(rate)) { alert(t('calculator.fillBoth')); return; } document.getElementById('calcResultField').value = `${t('calculator.result')} ${(r / rate).toFixed(2)} USDT`; };
-    document.getElementById('quickCalcBtn').onclick = () => { const r = parseFloat(document.getElementById('quickRub').value), u = parseFloat(document.getElementById('quickUsdt').value); if (isNaN(r) || isNaN(u) || u === 0) { alert(t('calculator.fillBoth')); return; } document.getElementById('quickResultField').value = `${t('calculator.secondResult')} ${(r / u).toFixed(2)} ₽`; };
+    document.getElementById('calcBtn').onclick = () => { const r = parseFloat(document.getElementById('calcRub').value), rate = parseFloat(document.getElementById('calcRate').value); if (isNaN(r) || isNaN(rate)) { showToast(t('calculator.fillBoth'), true); return; } document.getElementById('calcResultField').value = `${t('calculator.result')} ${(r / rate).toFixed(2)} USDT`; };
+    document.getElementById('quickCalcBtn').onclick = () => { const r = parseFloat(document.getElementById('quickRub').value), u = parseFloat(document.getElementById('quickUsdt').value); if (isNaN(r) || isNaN(u) || u === 0) { showToast(t('calculator.fillBoth'), true); return; } document.getElementById('quickResultField').value = `${t('calculator.secondResult')} ${(r / u).toFixed(2)} ₽`; };
     document.getElementById('supportBtn').onclick = () => window.open('https://t.me/KyratovVD', '_blank');
     document.getElementById('importAddBtn').onclick = importFromTelegramWallet;
     document.getElementById('manualSyncBtn').onclick = manualSync;
@@ -722,9 +1034,17 @@
     document.getElementById('showAllHistoryBtn').onclick = () => { renderHistory(); historyModal.style.display = 'flex'; };
     document.getElementById('closeHistoryBtn').onclick = () => historyModal.style.display = 'none';
     historyModal.onclick = (e) => { if (e.target === historyModal) historyModal.style.display = 'none'; };
-    document.getElementById('historySearchInput').oninput = (e) => { historySearchQuery = e.target.value; renderHistory(); };
+    
+    let searchTimeout;
+    document.getElementById('historySearchInput').oninput = (e) => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            historySearchQuery = e.target.value;
+            renderHistory();
+        }, 300);
+    };
     document.querySelectorAll('[data-history-filter]').forEach(btn => btn.onclick = () => { document.querySelectorAll('[data-history-filter]').forEach(b => b.classList.remove('active')); btn.classList.add('active'); historyFilter = btn.dataset.historyFilter; renderHistory(); });
-    document.getElementById('clearAllDataBtn').onclick = () => { if (confirm(t('home.deleteAllConfirm'))) { deals = []; saveData(); renderAll(); updateStats(); alert(t('home.deleteAllSuccess')); } };
+    document.getElementById('clearAllDataBtn').onclick = () => { if (confirm(t('home.deleteAllConfirm'))) { deals = []; saveData(); renderAll(); updateStats(); showToast(t('home.deleteAllSuccess')); } };
 
     function switchTab(tabId) {
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
